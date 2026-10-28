@@ -6,6 +6,7 @@ export const ticketStatuses = [
   "testing",
   "done",
   "duplicate",
+  "archived",
 ] as const;
 
 export type TicketStatus = (typeof ticketStatuses)[number];

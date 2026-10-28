@@ -151,3 +151,7 @@ Response: Replacing the native selector with a styled accessible status menu and
 
 2026-10-28T00:30:28-03:00 | Prompt: signed as 5 differents users and distributes votes, wanna have normal distribution of votes and 2 outlierst, you may create more requests if you think needed
 Response: Adding votes from five fictional users with a central distribution and two outliers to the development data.
+
+2026-10-28T00:31:39-03:00 | Prompt: create one more status -> archived. closed or done requests are automatically archived after 7 days. this should be audit tracked. they can be unarchived. create a view for the archived tickets
+User decision: Restore the previous status when unarchiving.
+Response: Implementing timed archival, tracked transitions, unarchiving, and an archived view.

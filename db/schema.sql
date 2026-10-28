@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS tickets (
   title TEXT NOT NULL,
   description TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  status TEXT NOT NULL DEFAULT 'open'
+  status TEXT NOT NULL DEFAULT 'open',
+  status_changed_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  previous_status TEXT
 );
 
 CREATE TABLE IF NOT EXISTS ticket_votes (

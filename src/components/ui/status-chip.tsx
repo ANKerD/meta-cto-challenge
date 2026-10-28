@@ -1,4 +1,4 @@
-import { Check, Circle, CircleCheck, CircleDot, CircleEllipsis, CircleSlash, Copy, FlaskConical } from "lucide-react";
+import { Archive, Check, Circle, CircleCheck, CircleDot, CircleEllipsis, CircleSlash, Copy, FlaskConical } from "lucide-react";
 import { ticketStatuses, type TicketStatus } from "@/lib/ticket-status";
 
 const statuses = {
@@ -8,6 +8,7 @@ const statuses = {
   in_review: { label: "In review", icon: CircleEllipsis, color: "text-status-review bg-status-review/10" },
   testing: { label: "Testing", icon: FlaskConical, color: "text-status-testing bg-status-testing/10" },
   done: { label: "Done", icon: CircleCheck, color: "text-status-done bg-status-done/10" },
+  archived: { label: "Archived", icon: Archive, color: "text-status-closed bg-status-closed/10" },
   duplicate: { label: "Duplicate", icon: Copy, color: "text-status-duplicate bg-status-duplicate/10" },
 } satisfies Record<TicketStatus, { label: string; icon: typeof Check; color: string }>;
 

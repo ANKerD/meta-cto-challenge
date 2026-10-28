@@ -14,7 +14,7 @@ export function StatusSelect({ uuid, status }: { uuid: string; status: string })
   const [pending, startTransition] = useTransition();
 
   function changeStatus(value: string) {
-    setSelected(value);
+    if (value !== "unarchive") setSelected(value);
     setError("");
     startTransition(async () => {
       const data = new FormData();
@@ -37,7 +37,9 @@ export function StatusSelect({ uuid, status }: { uuid: string; status: string })
           </StatusButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="start" sideOffset={4} className="z-50 min-w-40 rounded-md border border-border/60 bg-surface p-1 shadow-md">
-          {ticketStatuses.map((value) => (
+          {selected === "archived" ? (
+            <DropdownMenu.Item onSelect={() => changeStatus("unarchive")} className="cursor-pointer rounded-md px-2 py-1 text-sm outline-none data-highlighted:bg-background">Unarchive</DropdownMenu.Item>
+          ) : ticketStatuses.map((value) => (
             <DropdownMenu.Item key={value} onSelect={() => changeStatus(value)} className="flex cursor-pointer items-center justify-between gap-4 rounded-md px-2 py-1 outline-none data-highlighted:bg-background">
               <StatusChip status={value} />
               {value === selected && <Check size={14} aria-hidden="true" className="text-muted" />}

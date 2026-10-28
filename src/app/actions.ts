@@ -47,7 +47,7 @@ export async function setVote(uuid: string, operation: "add" | "remove") {
 
 export async function updateStatus(uuid: string, formData: FormData) {
   const status = formData.get("status");
-  if (typeof uuid !== "string" || typeof status !== "string" || !ticketStatuses.some((value) => value === status)) {
+  if (typeof uuid !== "string" || typeof status !== "string" || status !== "unarchive" && !ticketStatuses.some((value) => value === status)) {
     throw new Error("Invalid status.");
   }
 
@@ -57,7 +57,9 @@ export async function updateStatus(uuid: string, formData: FormData) {
     db.exec("BEGIN IMMEDIATE");
     try {
       const previousId = Number(db.prepare("SELECT COALESCE(MAX(id), 0) AS id FROM ticket_updates").get()?.id);
-      const result = db.prepare("UPDATE tickets SET status = ? WHERE uuid = ?").run(status, uuid);
+      const result = status === "unarchive"
+        ? db.prepare("UPDATE tickets SET status = COALESCE(previous_status, 'open') WHERE uuid = ? AND status = 'archived'").run(uuid)
+        : db.prepare("UPDATE tickets SET status = ? WHERE uuid = ?").run(status, uuid);
       if (!result.changes) throw new Error("Request not found.");
       db.prepare("UPDATE ticket_updates SET actor = ? WHERE ticket_id = (SELECT id FROM tickets WHERE uuid = ?) AND id > ?").run(actor, uuid, previousId);
       db.exec("COMMIT");
