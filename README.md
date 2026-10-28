@@ -22,7 +22,7 @@ The dump includes all data in `data.sqlite`. This repository is public, so remov
 
 ## Prototype login and voting
 
-Open `http://localhost:3000/login?user=your_name` to vote as that name. Names are case-sensitive. Each name can add or remove one vote per request. The login does not verify identity, so anyone can use another person's name.
+Open `http://localhost:3000/login` and enter a username to access the app. Names are case-sensitive. Each name can add or remove one vote per request. The login does not verify identity, so anyone can use another person's name.
 
 Closed and done requests are archived seven days after entering that status. The running server checks for eligible requests once a minute and on startup. It also checks when the list is loaded. If the server is stopped, overdue requests are archived when it next starts. Automatic changes appear in history as System. Unarchiving restores the previous status and starts a new seven-day period.
 

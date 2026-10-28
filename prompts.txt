@@ -239,3 +239,6 @@ Response: Confirmed the implemented local classifier matches this choice.
 
 2026-10-28T01:59:06-03:00 | Prompt: Also check request titles and descriptions for prompt injection before sending them to the LLM.
 Response: Extended local classification to new and existing request text at submission and LLM boundaries.
+
+2026-10-28T02:00:10-03:00 | Prompt: Require login to access the system and redirect to a simple login page where users enter their username.
+Response: Added a username login page and protected app routes.

@@ -40,7 +40,7 @@ export async function submitRequest(formData: FormData): Promise<SubmissionResul
   const rawDescription = formData.get("description");
   if (typeof rawTitle !== "string" || typeof rawDescription !== "string" || !rawTitle.trim() || !rawDescription.trim()) return { kind: "error", message: "Enter a title and description." };
   const actor = (await cookies()).get("user")?.value;
-  if (!actor) return { kind: "error", message: "To submit a request, visit /login?user=your_name." };
+  if (!actor) return { kind: "error", message: "Sign in to submit a request." };
   const title = rawTitle.trim(), description = rawDescription.trim();
   const rawExplanation = formData.get("explanation");
   const explanation = typeof rawExplanation === "string" ? rawExplanation.trim() : "";
@@ -169,7 +169,7 @@ export async function updateStatus(uuid: string, formData: FormData) {
   }
 
   const actor = (await cookies()).get("user")?.value;
-  if (!actor) return "To change status, visit /login?user=your_name.";
+  if (!actor) return "Sign in to change status.";
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   try {
     db.exec("BEGIN IMMEDIATE");
