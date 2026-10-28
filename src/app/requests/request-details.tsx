@@ -33,7 +33,7 @@ export async function RequestDetails({ params }: { params: Promise<{ uuid: strin
 
   return (
     <>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span className="font-mono text-sm text-muted">#{String(ticket.id)}</span>
           <h1 className="text-2xl font-semibold tracking-tight">{String(ticket.title)}</h1>
           <StatusChip status={String(ticket.status)} />

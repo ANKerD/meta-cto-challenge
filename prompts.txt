@@ -130,3 +130,6 @@ Response: Adding status changes and displaying ticket update history.
 
 2026-10-28T00:20:28-03:00 | Prompt: Add the ability to access the ticket through the URL, they should also be viewed as a modal. Clicking on the single request makes it redirect to history, so we have a new request, and then clicking off it moves back to the requests page.
 Response: Updating direct ticket URLs and browser navigation to display the request as a modal over the list.
+
+2026-10-28T00:22:40-03:00 | Prompt: the close button is poorly misaligned with the title [screenshot]
+Response: Aligned the modal close control with the request heading.
