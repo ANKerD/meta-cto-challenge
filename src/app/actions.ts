@@ -8,14 +8,16 @@ import { embed, EmbeddingUnavailable, MODEL } from "@/lib/embeddings";
 import { createHash } from "node:crypto";
 import { DUPLICATE_REVIEW_THRESHOLD, type Match, type SubmissionResult } from "@/lib/submission-result";
 import { reviewDuplicate, ReviewUnavailable, ReviewInputTooLong } from "@/lib/review-duplicate";
-import { isPromptInjection } from "@/lib/injection-classifier";
+import { checkRequestText } from "@/lib/injection-classifier";
 
 class IndexUnavailable extends Error {}
 
-type Candidate = Match & { id: number; description: string; contentHash: string };
+type Candidate = Match & { id: number; description: string; contentHash: string; titleActor: string; descriptionActor: string };
 
 function findMatches(db: DatabaseSync, vector: number[]): Candidate[] {
-  const rows = db.prepare(`SELECT t.id, t.uuid, t.title, t.description, e.embedding, q.ticket_id AS pending
+  const rows = db.prepare(`SELECT t.id, t.uuid, t.title, t.description, e.embedding, q.ticket_id AS pending,
+    (SELECT actor FROM ticket_updates WHERE ticket_id = t.id AND (json_type(changes, '$.title') IS NOT NULL OR json_type(changes, '$.created') IS NOT NULL) ORDER BY id DESC LIMIT 1) AS title_actor,
+    (SELECT actor FROM ticket_updates WHERE ticket_id = t.id AND (json_type(changes, '$.description') IS NOT NULL OR json_type(changes, '$.created') IS NOT NULL) ORDER BY id DESC LIMIT 1) AS description_actor
     FROM tickets t LEFT JOIN ticket_embeddings e ON e.ticket_id = t.id AND e.model = ?
     LEFT JOIN ticket_index_queue q ON q.ticket_id = t.id`).all(MODEL);
   const matches: Candidate[] = [];
@@ -24,7 +26,7 @@ function findMatches(db: DatabaseSync, vector: number[]): Candidate[] {
     const existing: unknown = JSON.parse(String(row.embedding));
     if (!Array.isArray(existing) || existing.length !== vector.length || !existing.every((value) => typeof value === "number" && Number.isFinite(value))) throw new Error("Invalid ticket embedding");
     const score = vector.reduce((sum, value, index) => sum + value * existing[index], 0);
-    if (score >= 0.35) matches.push({ id: Number(row.id), uuid: String(row.uuid), title: String(row.title), description: String(row.description), score, contentHash: createHash("sha256").update(JSON.stringify([row.title, row.description])).digest("hex") });
+    if (score >= 0.35) matches.push({ id: Number(row.id), uuid: String(row.uuid), title: String(row.title), description: String(row.description), titleActor: typeof row.title_actor === "string" ? row.title_actor : "Unknown user", descriptionActor: typeof row.description_actor === "string" ? row.description_actor : "Unknown user", score, contentHash: createHash("sha256").update(JSON.stringify([row.title, row.description])).digest("hex") });
   }
   return matches.sort((a, b) => b.score - a.score || a.id - b.id);
 }
@@ -43,6 +45,16 @@ export async function submitRequest(formData: FormData): Promise<SubmissionResul
   const rawExplanation = formData.get("explanation");
   const explanation = typeof rawExplanation === "string" ? rawExplanation.trim() : "";
   const confirmation = formData.get("confirmation");
+  for (const [field, text] of [["title", title], ["description", description]] as const) {
+    if (Buffer.byteLength(text, "utf8") > 6000) return { kind: "error", message: `The ${field} is too long. Shorten it and try again.` };
+    let flagged;
+    try { flagged = await checkRequestText(text, actor); }
+    catch { return { kind: "error", message: "The security check is unavailable. Please try again." }; }
+    if (flagged) {
+      revalidatePath("/", "layout");
+      return { kind: "error", message: `The ${field} was flagged by the security check. Please revise it.` };
+    }
+  }
   const allowUnavailable = process.env.DEDUP_ALLOW_OLLAMA_UNAVAILABLE === "true";
   let vector: number[] | null = null;
   try { vector = await embed(`${title}\n\n${description}`); }
@@ -66,16 +78,19 @@ export async function submitRequest(formData: FormData): Promise<SubmissionResul
     if (!explanation || (confirmation !== reviewToken && confirmation !== bypassToken)) return { kind: "duplicate_review", matches: snapshot, confirmation: reviewToken };
     if (Buffer.byteLength(explanation, "utf8") > 6000) return { kind: "error", message: "The explanation is too long. Shorten it and try again." };
     let flagged;
-    try { flagged = await isPromptInjection(explanation); }
+    try { flagged = await checkRequestText(explanation, actor); }
     catch { return { kind: "error", message: "The security check is unavailable. Please try again." }; }
     if (flagged) {
-      try {
-        const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
-        try { db.prepare("INSERT INTO security_alerts (actor) VALUES (?)").run(actor); }
-        finally { db.close(); }
-      } catch { return { kind: "error", message: "The security check is unavailable. Please try again." }; }
       revalidatePath("/", "layout");
       return { kind: "rejected", matches: snapshot, confirmation: reviewToken, reason: "The explanation was flagged by the security check. Please revise it." };
+    }
+    for (const candidate of suspected) {
+      try {
+        if (await checkRequestText(candidate.title, candidate.titleActor) || await checkRequestText(candidate.description, candidate.descriptionActor)) {
+          revalidatePath("/", "layout");
+          return { kind: "error", message: "An existing request was flagged by the security check. Review is unavailable." };
+        }
+      } catch { return { kind: "error", message: "The security check is unavailable. Please try again." }; }
     }
     try {
       const review = await reviewDuplicate({ title, description, explanation }, suspected.map(({ title, description }) => ({ title, description })));

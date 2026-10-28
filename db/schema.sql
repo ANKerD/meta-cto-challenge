@@ -3,6 +3,7 @@ BEGIN;
 CREATE TABLE IF NOT EXISTS security_alerts (
   id INTEGER PRIMARY KEY,
   actor TEXT NOT NULL,
+  fingerprint TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 

@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 import { getVoteStats } from "./vote-stats";
+import { checkRequestText } from "./injection-classifier";
 
 const zone = "America/Sao_Paulo";
 const leaseSeconds = 600;
@@ -77,6 +78,9 @@ export async function generateReport() {
   } finally { db.close(); }
 
   try {
+    for (const ticket of snapshot.tickets) {
+      if (await checkRequestText(ticket.title, ticket.actor || "Unknown user")) throw new Error("A request title was flagged by the security check");
+    }
     const top = (key: "recentVotes" | "totalVotes") => [...snapshot.tickets]
       .filter((ticket) => ticket.recentVotes > 0 && ticket[key] > 0)
       .sort((a, b) => b[key] - a[key] || a.id - b.id).slice(0, 5)

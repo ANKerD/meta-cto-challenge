@@ -11,6 +11,9 @@ try {
     db.exec("PRAGMA foreign_keys = ON");
   }
   db.exec(schema);
+  const alertColumns = db.prepare("PRAGMA table_info(security_alerts)").all();
+  if (!alertColumns.some((column) => column.name === "fingerprint")) db.exec("ALTER TABLE security_alerts ADD COLUMN fingerprint TEXT");
+  db.exec("CREATE UNIQUE INDEX IF NOT EXISTS security_alert_fingerprint ON security_alerts(fingerprint)");
   const voteColumns = db.prepare("PRAGMA table_info(ticket_votes)").all();
   if (!voteColumns.some((column) => column.name === "voted_at")) {
     db.exec("ALTER TABLE ticket_votes ADD COLUMN voted_at TEXT");

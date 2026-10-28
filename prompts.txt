@@ -236,3 +236,6 @@ Response: Adding a local classification gate and security alerts to the existing
 
 2026-10-28T01:57:27-03:00 | Decision: Use a dedicated local classifier for prompt injection checks.
 Response: Confirmed the implemented local classifier matches this choice.
+
+2026-10-28T01:59:06-03:00 | Prompt: Also check request titles and descriptions for prompt injection before sending them to the LLM.
+Response: Extended local classification to new and existing request text at submission and LLM boundaries.
