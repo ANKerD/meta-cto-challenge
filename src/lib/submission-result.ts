@@ -1,3 +1,5 @@
+export const DUPLICATE_REVIEW_THRESHOLD = 0.9;
+
 export type Match = { uuid: string; title: string; score: number };
 
 export type SubmissionResult =

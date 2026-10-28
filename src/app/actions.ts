@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { ticketStatuses } from "@/lib/ticket-status";
 import { embed, EmbeddingUnavailable, MODEL } from "@/lib/embeddings";
 import { createHash } from "node:crypto";
-import type { Match, SubmissionResult } from "@/lib/submission-result";
+import { DUPLICATE_REVIEW_THRESHOLD, type Match, type SubmissionResult } from "@/lib/submission-result";
 import { reviewDuplicate, ReviewUnavailable, ReviewInputTooLong } from "@/lib/review-duplicate";
 
 class IndexUnavailable extends Error {}
@@ -57,7 +57,7 @@ export async function submitRequest(formData: FormData): Promise<SubmissionResul
     catch { return { kind: "error", message: "Duplicate checking is unavailable while requests are being indexed. Try again shortly." }; }
     finally { db.close(); }
   }
-  const suspected = snapshot.filter((match) => match.score >= 0.85);
+  const suspected = snapshot.filter((match) => match.score >= DUPLICATE_REVIEW_THRESHOLD);
   const reviewToken = confirmationToken("review", title, description, actor, snapshot);
   let bypassReview = false;
   if (suspected.length) {
@@ -89,8 +89,8 @@ export async function submitRequest(formData: FormData): Promise<SubmissionResul
         const current = vector ? findMatches(db, vector) : [];
         if (vector && confirmationToken("snapshot", title, description, actor, current) !== confirmationToken("snapshot", title, description, actor, snapshot)) {
           db.exec("ROLLBACK");
-          const token = confirmationToken(current.some((m) => m.score >= 0.85) ? "review" : "related", title, description, actor, current);
-          if (current.some((m) => m.score >= 0.85)) return { kind: "duplicate_review", matches: current, confirmation: token };
+          const token = confirmationToken(current.some((m) => m.score >= DUPLICATE_REVIEW_THRESHOLD) ? "review" : "related", title, description, actor, current);
+          if (current.some((m) => m.score >= DUPLICATE_REVIEW_THRESHOLD)) return { kind: "duplicate_review", matches: current, confirmation: token };
           if (current.length) return { kind: "related", matches: current, confirmation: token };
           return { kind: "error", message: "Existing requests changed. Please submit again." };
         }

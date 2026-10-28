@@ -215,3 +215,6 @@ Response: Implementing similarity-triggered explanation and LLM review.
 
 2026-10-28T01:35:03-03:00 | Decision: Try the installed qwen3:14b instead of qwen3.8:27b after the integrated review timed out under memory pressure.
 Response: Switching the review model and verifying the full flow.
+
+2026-10-28T01:36:24-03:00 | Prompt: ok, will listen to your call and leave the threshold at 90% requiring a paragraph and llm approval
+Response: Raised the duplicate review threshold to 90% while retaining the explanation and LLM approval flow.

@@ -3,6 +3,7 @@
 import { useRef, useState, useTransition, type FormEvent } from "react";
 import { Plus, X } from "lucide-react";
 import { submitRequest } from "./actions";
+import { DUPLICATE_REVIEW_THRESHOLD } from "@/lib/submission-result";
 import { Button, Input, Textarea, CloseButton } from "@/components/ui/controls";
 
 type SubmissionResult = Awaited<ReturnType<typeof submitRequest>>;
@@ -38,8 +39,8 @@ export function RequestForm() {
   }
 
   const matches = result?.kind === "duplicate_review" || result?.kind === "rejected" || result?.kind === "related" ? result.matches : [];
-  const suspected = matches.filter((match) => match.score >= 0.85);
-  const related = matches.filter((match) => match.score < 0.85);
+  const suspected = matches.filter((match) => match.score >= DUPLICATE_REVIEW_THRESHOLD);
+  const related = matches.filter((match) => match.score < DUPLICATE_REVIEW_THRESHOLD);
   const confirmation = result?.kind === "related" || result?.kind === "unavailable";
   const review = result?.kind === "duplicate_review" || result?.kind === "rejected";
 

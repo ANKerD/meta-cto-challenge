@@ -34,6 +34,6 @@ Changing the embedding model requires regenerating existing embeddings. `npm run
 
 ## Duplicate checks
 
-Requests scoring at least 85% against an existing request require an explanation. Ollama reviews it using `qwen3:14b` before creation. Install that model with `ollama pull qwen3:14b`. A failed or invalid review does not create the request.
+Requests scoring at least 90% against an existing request require an explanation. Ollama reviews it using `qwen3:14b` before creation. Install that model with `ollama pull qwen3:14b`. A failed or invalid review does not create the request.
 
 By default, a request cannot be created if Ollama is unavailable. To allow creation during an Ollama outage, set `DEDUP_ALLOW_OLLAMA_UNAVAILABLE=true` in the server environment and restart the server. When Ollama is unavailable, users must confirm a warning that duplicate checking is disabled before creating a request. When Ollama is available, duplicate checking remains enabled. Requests waiting for indexing still block creation until their embeddings are ready.
