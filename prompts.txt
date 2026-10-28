@@ -106,3 +106,6 @@ Response: Moved the count into a chip before the upvote control.
 
 2026-10-28T00:11:05-03:00 | Prompt: upvote is also a cta bro. leaving it white is almost like you dont want people using it
 Response: Gave the upvote action a distinct visible color and updated the design guidance.
+
+2026-10-28T00:11:39-03:00 | Prompt: what colors should be good to the upvote button?
+Response: Compared action colors for the light interface and recommended blue.
