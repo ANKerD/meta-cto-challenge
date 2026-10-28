@@ -205,3 +205,6 @@ Response: Implementing server-enforced duplicate checks and an explicit unavaila
 
 2026-10-28T01:16:55-03:00 | Prompt: Let's review the 35% threshold. Show me the similarity scores for existing requests and recommend a better cutoff for related tickets.
 Response: Comparing existing ticket embeddings and assessing candidate thresholds.
+
+2026-10-28T01:17:25-03:00 | Prompt: we can also review the blocking 80% score, is it well set?
+Response: Evaluated duplicate blocking scores against existing ticket pairs and their tradeoffs.
