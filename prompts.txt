@@ -15,3 +15,6 @@ Original prompt: [$poteto-mode](/Users/andiso/.codex/skills/poteto-mode/SKILL.md
 You will not make any architectural decision. you're a super capable senior dev but needs to be told what to do. let's start with first steps. building the boilerplate of the project, a simple roadmap for the implementation and I'll guide on each step
 
 2026-10-27T23:35:21-03:00 | Response: Read the assessment, added project instructions and a requirements-based roadmap. The runnable boilerplate awaits a stack decision.
+
+2026-10-27T23:36:51-03:00 | Prompt: Let's use Next.js with TypeScript for the boilerplate. Use sqlite as the datastore. Set up the project. make a npm script to one shot setup the project
+Response: Preparing a minimal Next.js project and a repeatable setup command that initializes SQLite.
