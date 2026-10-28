@@ -233,3 +233,6 @@ Response: Adding report notifications and skipping days without new active upvot
 
 2026-10-28T01:44:34-03:00 | Prompt: Before sending the paragraph to an LLM, classify it for prompt injection and warn stakeholders in the notification board using a severe color and the user name.
 Response: Adding a local classification gate and security alerts to the existing notification board.
+
+2026-10-28T01:57:27-03:00 | Decision: Use a dedicated local classifier for prompt injection checks.
+Response: Confirmed the implemented local classifier matches this choice.
