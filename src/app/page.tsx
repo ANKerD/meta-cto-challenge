@@ -1,5 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
 import { cookies } from "next/headers";
+import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/controls";
 import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
@@ -40,6 +41,7 @@ export default async function Home() {
               </div>
               <form action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
                 <Button type="submit" disabled={!username} aria-pressed={Boolean(ticket.voted)}>
+                  <ArrowUp size={16} aria-hidden="true" />
                   {ticket.voted ? "Remove upvote" : "Upvote"} · <span className="font-mono">{String(ticket.votes)}</span>
                 </Button>
               </form>

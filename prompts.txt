@@ -94,3 +94,6 @@ Response: Reduced vertical spacing and placed request metadata on the same line,
 
 2026-10-28T00:08:33-03:00 | Prompt: submitting a new feature request should be a modal with a clear CTA at the top
 Response: Moving request submission to a modal opened by a top-level button.
+
+2026-10-28T00:09:33-03:00 | Prompt: add to our design languages icons like the ones spotify uses or any other descent design system has
+Response: Adding a consistent icon library and applying icons to existing actions.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
+import { Plus, X } from "lucide-react";
 import { submitRequest } from "./actions";
 import { Button, Input, Textarea, TextButton } from "@/components/ui/controls";
 
@@ -18,11 +19,11 @@ export function RequestForm() {
 
   return (
     <>
-      <Button type="button" onClick={() => dialogRef.current?.showModal()}>New request</Button>
+      <Button type="button" onClick={() => dialogRef.current?.showModal()}><Plus size={16} aria-hidden="true" />New request</Button>
       <dialog ref={dialogRef} aria-labelledby="request-dialog-title" className="m-auto w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
         <div className="mb-4 flex items-center justify-between gap-4">
           <h2 id="request-dialog-title" className="text-lg font-semibold">Submit a feature request</h2>
-          <TextButton type="button" onClick={() => dialogRef.current?.close()}>Close</TextButton>
+          <TextButton type="button" onClick={() => dialogRef.current?.close()}><X size={16} aria-hidden="true" />Close</TextButton>
         </div>
         <form action={action} className="space-y-4">
               <div className="space-y-2">
