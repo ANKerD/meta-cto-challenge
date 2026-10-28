@@ -1,5 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { VoteButton } from "@/components/ui/controls";
 import { StatusChip } from "@/components/ui/status-chip";
@@ -37,7 +38,7 @@ export default async function Home() {
             <li key={String(ticket.uuid)} className="flex items-center justify-between gap-3 py-2">
               <div className="flex min-w-0 flex-wrap items-center gap-x-3 text-sm">
                 <span className="font-mono text-muted">#{String(ticket.id)}</span>
-                <span className="font-medium">{String(ticket.title)}</span>
+                <Link href={`/requests/${String(ticket.uuid)}`} className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">{String(ticket.title)}</Link>
                 <StatusChip status={String(ticket.status)} />
               </div>
               <form className="flex items-center gap-2" action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
