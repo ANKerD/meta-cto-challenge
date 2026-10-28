@@ -26,8 +26,9 @@ export async function RequestList({ archived = false }: { archived?: boolean }) 
 
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b border-border/60 px-6 py-4 text-sm font-medium">
-        Feature requests
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-6 py-4 text-sm">
+        <span className="font-medium">Feature requests</span>
+        <span className="text-muted">{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
       </header>
       <section className="mx-auto max-w-2xl px-6 py-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -35,7 +36,6 @@ export async function RequestList({ archived = false }: { archived?: boolean }) 
           <RequestForm />
         </div>
         <nav className="mt-3 flex gap-4 text-sm"><Link href="/" className="text-muted hover:text-foreground">Requests</Link><Link href="/archived" className="text-muted hover:text-foreground">Archived</Link></nav>
-        <p className="mt-2 text-sm text-muted">{username ? `Signed in as ${username}` : "To vote, visit /login?user=your_name."}</p>
         <ul className="mt-4 divide-y divide-border/60 border-y border-border/60">
           {tickets.map((ticket) => (
             <li key={String(ticket.uuid)} className="flex items-center justify-between gap-3 py-2">
