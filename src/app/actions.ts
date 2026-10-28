@@ -8,6 +8,7 @@ import { embed, EmbeddingUnavailable, MODEL } from "@/lib/embeddings";
 import { createHash } from "node:crypto";
 import { DUPLICATE_REVIEW_THRESHOLD, type Match, type SubmissionResult } from "@/lib/submission-result";
 import { reviewDuplicate, ReviewUnavailable, ReviewInputTooLong } from "@/lib/review-duplicate";
+import { isPromptInjection } from "@/lib/injection-classifier";
 
 class IndexUnavailable extends Error {}
 
@@ -63,6 +64,19 @@ export async function submitRequest(formData: FormData): Promise<SubmissionResul
   if (suspected.length) {
     const bypassToken = confirmationToken("unavailable-review", title, description, actor, snapshot, explanation);
     if (!explanation || (confirmation !== reviewToken && confirmation !== bypassToken)) return { kind: "duplicate_review", matches: snapshot, confirmation: reviewToken };
+    if (Buffer.byteLength(explanation, "utf8") > 6000) return { kind: "error", message: "The explanation is too long. Shorten it and try again." };
+    let flagged;
+    try { flagged = await isPromptInjection(explanation); }
+    catch { return { kind: "error", message: "The security check is unavailable. Please try again." }; }
+    if (flagged) {
+      try {
+        const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
+        try { db.prepare("INSERT INTO security_alerts (actor) VALUES (?)").run(actor); }
+        finally { db.close(); }
+      } catch { return { kind: "error", message: "The security check is unavailable. Please try again." }; }
+      revalidatePath("/", "layout");
+      return { kind: "rejected", matches: snapshot, confirmation: reviewToken, reason: "The explanation was flagged by the security check. Please revise it." };
+    }
     try {
       const review = await reviewDuplicate({ title, description, explanation }, suspected.map(({ title, description }) => ({ title, description })));
       if (!review.allow) return { kind: "rejected", matches: snapshot, confirmation: reviewToken, reason: review.reason };

@@ -24,7 +24,10 @@ export async function RequestList({ archived = false, query = "" }: { archived?:
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   let tickets;
   let reports;
+  let alerts;
   try {
+    const hasAlerts = db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'security_alerts'").get();
+    alerts = hasAlerts ? db.prepare("SELECT id, actor, created_at FROM security_alerts ORDER BY id DESC LIMIT 30").all().map((alert) => ({ id: Number(alert.id), actor: String(alert.actor), date: String(alert.created_at) })) : [];
     const hasReports = db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'daily_reports'").get();
     reports = hasReports ? db.prepare("SELECT report_date, summary FROM daily_reports WHERE status = 'completed' ORDER BY report_date DESC LIMIT 30").all().map((report) => ({ date: String(report.report_date), summary: String(report.summary) })) : [];
     tickets = db.prepare(`
@@ -53,7 +56,7 @@ export async function RequestList({ archived = false, query = "" }: { archived?:
     <main className="min-h-screen bg-background">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-6 py-4 text-sm">
         <span className="font-medium">Feature requests</span>
-        <span className="flex items-center gap-4 text-muted"><Notifications reports={reports} />{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
+        <span className="flex items-center gap-4 text-muted"><Notifications reports={reports} alerts={alerts} />{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
       </header>
       <section className="mx-auto max-w-2xl px-6 py-6">
         <div className="flex flex-wrap items-center justify-between gap-3">

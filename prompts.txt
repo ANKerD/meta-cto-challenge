@@ -230,3 +230,6 @@ Response: Applied the relevant guidelines while implementing and validating the 
 
 2026-10-28T01:42:38-03:00 | Prompt: In production this report would be emailed or sent by WhatsApp; add an in-app notification icon with messages, avoid processing the same requests twice without new upvotes, and allow nothing to report.
 Response: Adding report notifications and skipping days without new active upvotes.
+
+2026-10-28T01:44:34-03:00 | Prompt: Before sending the paragraph to an LLM, classify it for prompt injection and warn stakeholders in the notification board using a severe color and the user name.
+Response: Adding a local classification gate and security alerts to the existing notification board.
