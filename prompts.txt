@@ -158,3 +158,6 @@ Response: Implementing timed archival, tracked transitions, unarchiving, and an 
 
 2026-10-28T00:34:51-03:00 | Prompt: the close button is not red formatted... let's make sure the agent is capable of follow a design language and guidelines!
 Response: Applying a shared red close control and documenting its use for agents.
+
+2026-10-28T00:35:51-03:00 | Prompt: The creation per se is an update, it should be on the update history. rename it to just "History"
+Response: Recording request creation in history and renaming the history section.

@@ -13,10 +13,19 @@ export async function submitRequest(formData: FormData): Promise<string> {
     return "Enter a title and description.";
   }
 
+  const actor = (await cookies()).get("user")?.value || null;
   try {
-    const db = new DatabaseSync("data.sqlite");
+    const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
     try {
-      db.prepare("INSERT INTO tickets (title, description) VALUES (?, ?)").run(title.trim(), description.trim());
+      db.exec("BEGIN IMMEDIATE");
+      try {
+        const result = db.prepare("INSERT INTO tickets (title, description) VALUES (?, ?)").run(title.trim(), description.trim());
+        db.prepare("UPDATE ticket_updates SET actor = ? WHERE ticket_id = ? AND json_type(changes, '$.created') IS NOT NULL").run(actor, result.lastInsertRowid);
+        db.exec("COMMIT");
+      } catch (error) {
+        db.exec("ROLLBACK");
+        throw error;
+      }
     } finally {
       db.close();
     }

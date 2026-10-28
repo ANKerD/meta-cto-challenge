@@ -37,6 +37,13 @@ CREATE VIEW IF NOT EXISTS related_tickets AS
   UNION ALL
   SELECT related_ticket_id, ticket_id FROM ticket_relationships;
 
+CREATE TRIGGER IF NOT EXISTS ticket_created
+AFTER INSERT ON tickets
+BEGIN
+  INSERT INTO ticket_updates (ticket_id, created_at, changes)
+  VALUES (NEW.id, NEW.created_at, json_object('created', json_object('new', 1)));
+END;
+
 CREATE TRIGGER IF NOT EXISTS ticket_fields_updated
 AFTER UPDATE ON tickets
 WHEN OLD.id IS NOT NEW.id OR OLD.uuid IS NOT NEW.uuid OR OLD.title IS NOT NEW.title

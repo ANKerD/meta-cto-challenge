@@ -15,6 +15,11 @@ try {
   if (!updateColumns.some((column) => column.name === "actor")) {
     db.exec("ALTER TABLE ticket_updates ADD COLUMN actor TEXT");
   }
+  db.exec(`INSERT INTO ticket_updates (ticket_id, created_at, changes)
+    SELECT t.id, t.created_at, json_object('created', json_object('new', 1))
+    FROM tickets t WHERE NOT EXISTS (
+      SELECT 1 FROM ticket_updates u WHERE u.ticket_id = t.id AND json_type(u.changes, '$.created') IS NOT NULL
+    )`);
   const columns = db.prepare("PRAGMA table_info(tickets)").all();
   const table = db.prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'tickets'").get();
   const hasUuid = columns.some((column) => column.name === "uuid");

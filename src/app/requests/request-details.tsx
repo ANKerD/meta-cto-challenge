@@ -23,7 +23,7 @@ export async function RequestDetails({ params, archived = false }: { params: Pro
         json_extract(change.value, '$.old') AS old_value,
         json_extract(change.value, '$.new') AS new_value
       FROM ticket_updates u, json_each(u.changes) AS change
-      WHERE u.ticket_id = ? ORDER BY u.id DESC
+      WHERE u.ticket_id = ? ORDER BY u.created_at DESC, u.id DESC
     `).all(ticket.id);
   } finally {
     db.close();
@@ -50,14 +50,14 @@ export async function RequestDetails({ params, archived = false }: { params: Pro
             ))}
           </ul>
         ) : <p className="mt-2 text-sm text-muted">No related tickets.</p>}
-        <h2 className="mt-6 text-sm font-semibold">Update history</h2>
+        <h2 className="mt-6 text-sm font-semibold">History</h2>
         {history.length ? (
           <ul className="mt-2 divide-y divide-border/60 border-y border-border/60">
             {history.map((entry) => (
               <li key={`${String(entry.id)}-${String(entry.field)}`} className="flex flex-wrap items-center gap-x-2 py-2 text-sm">
                 <time className="font-mono text-xs text-muted" dateTime={String(entry.created_at)}>{String(entry.created_at).replace("T", " ").replace(/\.\d+Z$/, " UTC")}</time>
                 <span>{entry.actor === null ? "Unknown user" : String(entry.actor)}</span>
-                <span>{String(entry.field).replaceAll("_", " ")}: {entry.old_value === null ? "None" : String(entry.old_value).replaceAll("_", " ")} → {entry.new_value === null ? "None" : String(entry.new_value).replaceAll("_", " ")}</span>
+                <span>{entry.field === "created" ? "Created request" : <>{String(entry.field).replaceAll("_", " ")}: {entry.old_value === null ? "None" : String(entry.old_value).replaceAll("_", " ")} → {entry.new_value === null ? "None" : String(entry.new_value).replaceAll("_", " ")}</>}</span>
               </li>
             ))}
           </ul>
