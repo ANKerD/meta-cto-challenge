@@ -251,3 +251,5 @@ Response: Generated the voice-over and assembled the demo video.
 
 2026-10-28T02:17:38-03:00 | Prompt: Upload the demo video to Google Drive and make it publicly accessible without login.
 Response: Uploading the video and configuring anyone-with-the-link viewing.
+
+2026-10-28T02:20:26-03:00 | Result: Uploaded the demo to Google Drive. The Drive connection lacks write scopes, and the browser sharing dialog reported sharing unavailable; public access remains unset.
