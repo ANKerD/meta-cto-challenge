@@ -14,7 +14,11 @@ export function RequestModal({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <dialog ref={ref} aria-label="Feature request details" onCancel={(event) => { event.preventDefault(); router.push("/"); }} className="m-auto max-h-full w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
+    <dialog ref={ref} aria-label="Feature request details" onCancel={(event) => { event.preventDefault(); router.push("/"); }} onClick={(event) => {
+      if (event.target !== event.currentTarget) return;
+      const bounds = event.currentTarget.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) router.push("/");
+    }} className="m-auto max-h-full w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
       <div className="flex justify-end"><TextButton type="button" onClick={() => router.push("/")}><X size={16} aria-hidden="true" />Close</TextButton></div>
       {children}
     </dialog>
