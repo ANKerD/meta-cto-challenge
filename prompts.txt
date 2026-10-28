@@ -208,3 +208,7 @@ Response: Comparing existing ticket embeddings and assessing candidate threshold
 
 2026-10-28T01:17:25-03:00 | Prompt: we can also review the blocking 80% score, is it well set?
 Response: Evaluated duplicate blocking scores against existing ticket pairs and their tradeoffs.
+
+2026-10-28T01:20:28-03:00 | Prompt: let's set the threshold at 85%. no more blocks but we need the person to right a paragrph explaining why this is something different from the alternatives. an llm will evaluate the response and decide if it should move on or not. for this analysis we need a way more capable LLM.
+User selected qwen3.8:27b for the review.
+Response: Implementing similarity-triggered explanation and LLM review.

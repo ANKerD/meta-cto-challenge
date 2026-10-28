@@ -11,13 +11,15 @@ export function RequestForm() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [explanation, setExplanation] = useState("");
   const [result, setResult] = useState<SubmissionResult | null>(null);
   const [pending, startTransition] = useTransition();
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (result?.kind === "related" || result?.kind === "unavailable") {
+    if (explanation.trim()) data.set("explanation", explanation);
+    if (result?.kind === "related" || result?.kind === "unavailable" || result?.kind === "duplicate_review" || result?.kind === "rejected") {
       data.set("confirmation", result.confirmation);
     }
     startTransition(async () => {
@@ -27,6 +29,7 @@ export function RequestForm() {
         if (next.kind === "created") {
           setTitle("");
           setDescription("");
+          setExplanation("");
         }
       } catch {
         setResult({ kind: "error", message: "Could not submit the request. Please try again." });
@@ -34,8 +37,11 @@ export function RequestForm() {
     });
   }
 
-  const matches = result?.kind === "duplicate" || result?.kind === "related" ? result.matches : [];
+  const matches = result?.kind === "duplicate_review" || result?.kind === "rejected" || result?.kind === "related" ? result.matches : [];
+  const suspected = matches.filter((match) => match.score >= 0.85);
+  const related = matches.filter((match) => match.score < 0.85);
   const confirmation = result?.kind === "related" || result?.kind === "unavailable";
+  const review = result?.kind === "duplicate_review" || result?.kind === "rejected";
 
   return (
     <>
@@ -52,18 +58,24 @@ export function RequestForm() {
         <form onSubmit={submit} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="title" className="block text-sm font-medium">Title</label>
-            <Input id="title" name="title" placeholder="Search requests by keyword" required disabled={pending} value={title} onChange={(event) => { setTitle(event.target.value); setResult(null); }} />
+            <Input id="title" name="title" placeholder="Search requests by keyword" required disabled={pending} value={title} onChange={(event) => { setTitle(event.target.value); setExplanation(""); setResult(null); }} />
           </div>
           <div className="space-y-2">
             <label htmlFor="description" className="block text-sm font-medium">Description</label>
-            <Textarea id="description" name="description" placeholder="What problem would this solve?" required disabled={pending} rows={3} value={description} onChange={(event) => { setDescription(event.target.value); setResult(null); }} />
+            <Textarea id="description" name="description" placeholder="What problem would this solve?" required disabled={pending} rows={3} value={description} onChange={(event) => { setDescription(event.target.value); setExplanation(""); setResult(null); }} />
           </div>
-          {result?.kind === "duplicate" && <p role="alert" className="text-sm">This request matches an existing ticket. Open the ticket instead.</p>}
+          {review && <p role="status" className="text-sm">These requests may be duplicates. Explain how your request differs before creating it.</p>}
           {result?.kind === "related" && <p role="status" className="text-sm">These tickets may be related. Create this request and link them?</p>}
-          {matches.length > 0 && <ul className="space-y-1 text-sm">{matches.map((match) => <li key={match.uuid}><a href={`/requests/${match.uuid}`} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{match.title}</a> <span className="font-mono text-muted">{Math.floor(match.score * 1000) / 10}%</span></li>)}</ul>}
+          {suspected.length > 0 && <div><p className="text-sm font-medium">Possible duplicates</p><ul className="mt-2 space-y-1 text-sm">{suspected.map((match) => <li key={match.uuid}><a href={`/requests/${match.uuid}`} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{match.title}</a> <span className="font-mono text-muted">{Math.floor(match.score * 1000) / 10}%</span></li>)}</ul></div>}
+          {related.length > 0 && <details open={!review}><summary className="cursor-pointer text-sm font-medium">Related requests ({related.length})</summary><p className="mt-2 text-sm text-muted">These requests will be linked if this request is created.</p><ul className="mt-2 space-y-1 text-sm">{related.map((match) => <li key={match.uuid}><a href={`/requests/${match.uuid}`} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{match.title}</a> <span className="font-mono text-muted">{Math.floor(match.score * 1000) / 10}%</span></li>)}</ul></details>}
+          {review && <div className="space-y-2">
+            <label htmlFor="explanation" className="block text-sm font-medium">How is this request different?</label>
+            <Textarea id="explanation" name="explanation" required disabled={pending} rows={3} value={explanation} onChange={(event) => setExplanation(event.target.value)} />
+          </div>}
+          {result?.kind === "rejected" && <p role="alert" className="text-sm">{result.reason}</p>}
           {(result?.kind === "error" || result?.kind === "unavailable") && <p role="alert" className="text-sm">{result.message}</p>}
           {result?.kind === "created" && <p role="status" className="text-sm">{result.warning || "Request submitted."}</p>}
-          <Button type="submit" disabled={pending}>{pending ? "Checking..." : confirmation ? "Create request" : "Submit request"}</Button>
+          <Button type="submit" disabled={pending}>{pending ? "Checking..." : review ? "Review and create" : confirmation ? "Create request" : "Submit request"}</Button>
         </form>
       </dialog>
     </>
