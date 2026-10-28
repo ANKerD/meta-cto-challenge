@@ -65,3 +65,6 @@ Response: Proposed a request list and discovery flow for review. No implementati
 
 2026-10-27T23:59:56-03:00 | Prompt: Make sure everything is setup with live reload. wanna see everything magically in chrome
 Response: Starting the Next.js development server and opening the app in Chrome for live reload.
+
+2026-10-28T00:01:22-03:00 | Prompt: I want ticket's to have distinct uuids store internally and used in URLs plus auto increment numbers. For now we will NOT build things like project prefixes like "SAL-123" or "SAF-910", but in future that could be the case.
+Response: Adding UUIDs and retaining auto-incremented ticket numbers, with a data-preserving migration.

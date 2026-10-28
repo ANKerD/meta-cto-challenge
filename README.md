@@ -11,3 +11,5 @@ AI processing will use Ollama running on the local machine. The model, AI workfl
 Use Node.js 24 and npm. Run `npm run setup` to install dependencies and create the local SQLite database if it does not exist. The command preserves an existing database. Run `npm run dev` and open http://localhost:3000.
 
 The database is stored in `data.sqlite` and is excluded from Git. The project uses Node's built-in SQLite module. The setup command creates the ticket, relationship, and update-history tables. It leaves existing data in place.
+
+Tickets have an auto-incrementing number and a unique UUID. Use the UUID for ticket URLs. Running setup upgrades an existing database and preserves ticket numbers, relationships, and update history.
