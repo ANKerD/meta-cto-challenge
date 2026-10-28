@@ -10,7 +10,7 @@ export async function reviewDuplicate(draft: { title: string; description: strin
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "qwen3.8:27b",
+        model: "qwen3:14b",
         stream: false,
         think: false,
         format: { type: "object", properties: { allow: { type: "boolean" }, reason: { type: "string" } }, required: ["allow", "reason"] },

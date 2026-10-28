@@ -212,3 +212,6 @@ Response: Evaluated duplicate blocking scores against existing ticket pairs and 
 2026-10-28T01:20:28-03:00 | Prompt: let's set the threshold at 85%. no more blocks but we need the person to right a paragrph explaining why this is something different from the alternatives. an llm will evaluate the response and decide if it should move on or not. for this analysis we need a way more capable LLM.
 User selected qwen3.8:27b for the review.
 Response: Implementing similarity-triggered explanation and LLM review.
+
+2026-10-28T01:35:03-03:00 | Decision: Try the installed qwen3:14b instead of qwen3.8:27b after the integrated review timed out under memory pressure.
+Response: Switching the review model and verifying the full flow.
