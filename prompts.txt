@@ -190,3 +190,6 @@ Response: Implementing persistent indexing, backfill and semantic search with Ol
 
 2026-10-28T01:02:24-03:00 | Prompt: What are the ways we can group the tickets automatically using AI in this step? the main idea is reducing triage time, and preventing duplicate tickets. users should get a confirmation before creating a ticket when they identify the contents of the tickets are duplicate. 80% or more similarity should prevent the ticket creation. 35% or more should marj the tickets as related.
 Response: Describing grouping options and the thresholds, and identifying the confirmation rule for clarification.
+
+2026-10-28T01:02:46-03:00 | Decision: Block creation when a request scores 80% or higher; direct the user to the existing ticket.
+Response: Incorporated the decision into the proposed triage flow.
