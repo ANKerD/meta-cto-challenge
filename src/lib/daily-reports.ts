@@ -47,7 +47,7 @@ export async function generateReport() {
       VALUES (?, 'running', ?, ?, ?, unixepoch() + ?, ?)
       ON CONFLICT(report_date) DO UPDATE SET status = 'running', claim_token = excluded.claim_token,
         lease_until = excluded.lease_until, error = NULL, updated_at = excluded.updated_at
-      WHERE daily_reports.status != 'completed' AND
+      WHERE daily_reports.status NOT IN ('completed', 'skipped') AND
         (daily_reports.status != 'running' OR daily_reports.lease_until <= unixepoch())
       RETURNING report_date`).get(reportDate, new Date(now.getTime() - 86_400_000).toISOString(), now.toISOString(), token, leaseSeconds, now.toISOString());
     if (!claimed) { db.exec("ROLLBACK"); return false; }
@@ -56,11 +56,19 @@ export async function generateReport() {
       end = String(existing.window_end);
       snapshot = JSON.parse(String(existing.data));
     } else {
-      start = new Date(now.getTime() - 86_400_000).toISOString();
+      const previous = db.prepare("SELECT max(window_end) AS window_end FROM daily_reports WHERE status IN ('completed', 'skipped')").get();
+      const lastDay = new Date(now.getTime() - 86_400_000).toISOString();
+      start = typeof previous?.window_end === "string" && previous.window_end > lastDay ? previous.window_end : lastDay;
       end = now.toISOString();
       snapshot = getVoteStats(db, start, end);
-      db.prepare("UPDATE daily_reports SET data = ? WHERE report_date = ? AND claim_token = ?")
-        .run(JSON.stringify(snapshot), reportDate, token);
+      snapshot.tickets = snapshot.tickets.filter((ticket) => ticket.recentVotes > 0);
+      db.prepare("UPDATE daily_reports SET data = ?, window_start = ? WHERE report_date = ? AND claim_token = ?")
+        .run(JSON.stringify(snapshot), start, reportDate, token);
+    }
+    if (!snapshot.tickets.some((ticket) => ticket.recentVotes > 0)) {
+      db.prepare("UPDATE daily_reports SET status = 'skipped', claim_token = NULL, lease_until = NULL WHERE report_date = ? AND claim_token = ?").run(reportDate, token);
+      db.exec("COMMIT");
+      return false;
     }
     db.exec("COMMIT");
   } catch (error) {
@@ -70,7 +78,7 @@ export async function generateReport() {
 
   try {
     const top = (key: "recentVotes" | "totalVotes") => [...snapshot.tickets]
-      .filter((ticket) => ticket[key] > 0)
+      .filter((ticket) => ticket.recentVotes > 0 && ticket[key] > 0)
       .sort((a, b) => b[key] - a[key] || a.id - b.id).slice(0, 5)
       .map(({ id, title, status, recentVotes, totalVotes }) => ({ id, title, status, recentVotes, totalVotes }));
     const response = await fetch("http://127.0.0.1:11434/api/chat", {

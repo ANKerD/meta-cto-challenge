@@ -9,6 +9,7 @@ import { StatusSelect } from "@/app/requests/status-select";
 import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
 import { searchTickets } from "@/lib/search";
+import { Notifications } from "./notifications";
 
 export async function RequestList({ archived = false, query = "" }: { archived?: boolean; query?: string }) {
   archiveDueTickets();
@@ -22,7 +23,10 @@ export async function RequestList({ archived = false, query = "" }: { archived?:
   const username = (await cookies()).get("user")?.value;
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   let tickets;
+  let reports;
   try {
+    const hasReports = db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'daily_reports'").get();
+    reports = hasReports ? db.prepare("SELECT report_date, summary FROM daily_reports WHERE status = 'completed' ORDER BY report_date DESC LIMIT 30").all().map((report) => ({ date: String(report.report_date), summary: String(report.summary) })) : [];
     tickets = db.prepare(`
       SELECT t.uuid, t.id, t.title, t.status,
         (SELECT count(*) FROM ticket_votes WHERE ticket_id = t.id) AS votes,
@@ -49,7 +53,7 @@ export async function RequestList({ archived = false, query = "" }: { archived?:
     <main className="min-h-screen bg-background">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-6 py-4 text-sm">
         <span className="font-medium">Feature requests</span>
-        <span className="flex items-center gap-4 text-muted"><Link href="/reports" className="hover:text-foreground">Reports</Link>{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
+        <span className="flex items-center gap-4 text-muted"><Notifications reports={reports} />{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
       </header>
       <section className="mx-auto max-w-2xl px-6 py-6">
         <div className="flex flex-wrap items-center justify-between gap-3">

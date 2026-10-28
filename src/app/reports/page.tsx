@@ -46,8 +46,8 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   let report;
   try {
     const hasTable = db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'daily_reports'").get();
-    reports = hasTable ? db.prepare("SELECT report_date, status FROM daily_reports ORDER BY report_date DESC LIMIT 30").all() : [];
-    report = hasTable ? (date ? db.prepare("SELECT * FROM daily_reports WHERE report_date = ?").get(date) : db.prepare("SELECT * FROM daily_reports ORDER BY report_date DESC LIMIT 1").get()) : undefined;
+    reports = hasTable ? db.prepare("SELECT report_date, status FROM daily_reports WHERE status != 'skipped' ORDER BY report_date DESC LIMIT 30").all() : [];
+    report = hasTable ? (date ? db.prepare("SELECT * FROM daily_reports WHERE report_date = ? AND status != 'skipped'").get(date) : db.prepare("SELECT * FROM daily_reports WHERE status != 'skipped' ORDER BY report_date DESC LIMIT 1").get()) : undefined;
   } finally {
     db.close();
   }
@@ -66,7 +66,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
             <p className="mt-4 whitespace-pre-wrap text-sm">{String(report.summary ?? "")}</p>
             {data.unknownVoteTimes > 0 && <p className="mt-4 text-sm text-muted">{data.unknownVoteTimes} existing votes have no recorded time and are excluded from the 24-hour ranking.</p>}
             <Ranking title="Upvotes in the last 24 hours" tickets={data.tickets} metric="recentVotes" />
-            <Ranking title="All-time active upvotes" tickets={data.tickets} metric="totalVotes" />
+            <Ranking title="All-time active upvotes (requests with new votes)" tickets={data.tickets} metric="totalVotes" />
           </> : <p className="mt-4 text-sm text-muted">{report.status === "running" ? "The report is being generated." : report.status === "failed" ? "The report could not be generated. It will be retried." : "Report data is unavailable."}</p>}
         </>}
       </section>
