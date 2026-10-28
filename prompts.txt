@@ -187,3 +187,6 @@ Response: Compared available published evidence and distinguished it from measur
 
 Let's implement this as a feature added to a running system. implement a queue for messages to be indexed, older existing requests should be added for backfilling. new requests are added during creation. when a request has title or description updated it should be reindexed.
 Response: Implementing persistent indexing, backfill and semantic search with Ollama qwen3-embedding:0.6b.
+
+2026-10-28T01:02:24-03:00 | Prompt: What are the ways we can group the tickets automatically using AI in this step? the main idea is reducing triage time, and preventing duplicate tickets. users should get a confirmation before creating a ticket when they identify the contents of the tickets are duplicate. 80% or more similarity should prevent the ticket creation. 35% or more should marj the tickets as related.
+Response: Describing grouping options and the thresholds, and identifying the confirmation rule for clarification.
