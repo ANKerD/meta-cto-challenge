@@ -161,3 +161,6 @@ Response: Applying a shared red close control and documenting its use for agents
 
 2026-10-28T00:35:51-03:00 | Prompt: The creation per se is an update, it should be on the update history. rename it to just "History"
 Response: Recording request creation in history and renaming the history section.
+
+2026-10-28T00:45:50-03:00 | Prompt: let's discuss search. I want it to implement semantic search. what do we need to change in terms of databases? can we make it work with sqlite? would it be efficient or do we need anything extra?
+Response: Reviewing SQLite and Ollama options for semantic search without changing the implementation.
