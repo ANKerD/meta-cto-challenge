@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS ticket_updates (
   id INTEGER PRIMARY KEY,
   ticket_id INTEGER NOT NULL REFERENCES tickets(id) ON UPDATE CASCADE,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  changes TEXT NOT NULL CHECK (json_valid(changes))
+  changes TEXT NOT NULL CHECK (json_valid(changes)),
+  actor TEXT
 );
 
 CREATE TABLE IF NOT EXISTS ticket_relationships (

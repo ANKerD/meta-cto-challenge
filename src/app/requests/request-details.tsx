@@ -19,7 +19,7 @@ export async function RequestDetails({ params }: { params: Promise<{ uuid: strin
       WHERE r.ticket_id = ? ORDER BY t.id DESC
     `).all(ticket.id);
     history = db.prepare(`
-      SELECT u.id, u.created_at, change.key AS field,
+      SELECT u.id, u.created_at, u.actor, change.key AS field,
         json_extract(change.value, '$.old') AS old_value,
         json_extract(change.value, '$.new') AS new_value
       FROM ticket_updates u, json_each(u.changes) AS change
@@ -56,6 +56,7 @@ export async function RequestDetails({ params }: { params: Promise<{ uuid: strin
             {history.map((entry) => (
               <li key={`${String(entry.id)}-${String(entry.field)}`} className="flex flex-wrap items-center gap-x-2 py-2 text-sm">
                 <time className="font-mono text-xs text-muted" dateTime={String(entry.created_at)}>{String(entry.created_at).replace("T", " ").replace(/\.\d+Z$/, " UTC")}</time>
+                <span>{entry.actor === null ? "Unknown user" : String(entry.actor)}</span>
                 <span>{String(entry.field).replaceAll("_", " ")}: {entry.old_value === null ? "None" : String(entry.old_value).replaceAll("_", " ")} → {entry.new_value === null ? "None" : String(entry.new_value).replaceAll("_", " ")}</span>
               </li>
             ))}

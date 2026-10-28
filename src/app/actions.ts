@@ -51,10 +51,20 @@ export async function updateStatus(uuid: string, formData: FormData) {
     throw new Error("Invalid status.");
   }
 
+  const actor = (await cookies()).get("user")?.value || null;
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   try {
-    const result = db.prepare("UPDATE tickets SET status = ? WHERE uuid = ?").run(status, uuid);
-    if (!result.changes) throw new Error("Request not found.");
+    db.exec("BEGIN IMMEDIATE");
+    try {
+      const previousId = Number(db.prepare("SELECT COALESCE(MAX(id), 0) AS id FROM ticket_updates").get()?.id);
+      const result = db.prepare("UPDATE tickets SET status = ? WHERE uuid = ?").run(status, uuid);
+      if (!result.changes) throw new Error("Request not found.");
+      db.prepare("UPDATE ticket_updates SET actor = ? WHERE ticket_id = (SELECT id FROM tickets WHERE uuid = ?) AND id > ?").run(actor, uuid, previousId);
+      db.exec("COMMIT");
+    } catch (error) {
+      db.exec("ROLLBACK");
+      throw error;
+    }
   } finally {
     db.close();
   }

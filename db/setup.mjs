@@ -11,6 +11,10 @@ try {
     db.exec("PRAGMA foreign_keys = ON");
   }
   db.exec(schema);
+  const updateColumns = db.prepare("PRAGMA table_info(ticket_updates)").all();
+  if (!updateColumns.some((column) => column.name === "actor")) {
+    db.exec("ALTER TABLE ticket_updates ADD COLUMN actor TEXT");
+  }
   const columns = db.prepare("PRAGMA table_info(tickets)").all();
   const table = db.prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'tickets'").get();
   const hasUuid = columns.some((column) => column.name === "uuid");
