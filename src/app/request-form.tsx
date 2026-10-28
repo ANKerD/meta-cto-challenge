@@ -16,14 +16,14 @@ export function RequestForm() {
   }, "");
 
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className="space-y-4">
       <div className="space-y-2">
         <label htmlFor="title" className="block text-sm font-medium">Title</label>
         <Input id="title" name="title" placeholder="Search requests by keyword" required disabled={pending} value={title} onChange={(event) => setTitle(event.target.value)} />
       </div>
       <div className="space-y-2">
         <label htmlFor="description" className="block text-sm font-medium">Description</label>
-        <Textarea id="description" name="description" placeholder="What problem would this solve?" required disabled={pending} rows={6} value={description} onChange={(event) => setDescription(event.target.value)} />
+        <Textarea id="description" name="description" placeholder="What problem would this solve?" required disabled={pending} rows={3} value={description} onChange={(event) => setDescription(event.target.value)} />
       </div>
       <Button type="submit" disabled={pending}>{pending ? "Submitting..." : "Submit request"}</Button>
       <p role="status" aria-live="polite" className="text-sm text-muted">{message}</p>

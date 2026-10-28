@@ -24,15 +24,16 @@ export default async function Home() {
       <header className="border-b border-border/60 px-6 py-4 text-sm font-medium">
         Feature requests
       </header>
-      <section className="mx-auto max-w-2xl px-6 py-12">
+      <section className="mx-auto max-w-2xl px-6 py-6">
         <h1 className="text-2xl font-semibold tracking-tight">Feature requests</h1>
         <p className="mt-2 text-sm text-muted">{username ? `Signed in as ${username}` : "To vote, visit /login?user=your_name."}</p>
-        <ul className="mt-8 divide-y divide-border/60 border-y border-border/60">
+        <ul className="mt-4 divide-y divide-border/60 border-y border-border/60">
           {tickets.map((ticket) => (
-            <li key={String(ticket.uuid)} className="flex items-center justify-between gap-4 py-4">
-              <div>
-                <p className="font-medium">{String(ticket.title)}</p>
-                <p className="mt-1 text-sm text-muted"><span className="font-mono">#{String(ticket.id)}</span> · {String(ticket.status).replaceAll("_", " ")}</p>
+            <li key={String(ticket.uuid)} className="flex items-center justify-between gap-3 py-2">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-3 text-sm">
+                <span className="font-mono text-muted">#{String(ticket.id)}</span>
+                <span className="font-medium">{String(ticket.title)}</span>
+                <span className="text-muted">{String(ticket.status).replaceAll("_", " ")}</span>
               </div>
               <form action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
                 <Button type="submit" disabled={!username} aria-pressed={Boolean(ticket.voted)}>
@@ -43,8 +44,8 @@ export default async function Home() {
           ))}
         </ul>
         {tickets.length === 0 && <p className="mt-4 text-sm text-muted">No feature requests yet.</p>}
-        <h2 className="mt-12 text-xl font-semibold tracking-tight">Submit a feature request</h2>
-        <div className="mt-8">
+        <h2 className="mt-8 text-xl font-semibold tracking-tight">Submit a feature request</h2>
+        <div className="mt-4">
           <RequestForm />
         </div>
       </section>

@@ -88,3 +88,6 @@ Response: Implementing prototype name-based login and one removable vote per use
 
 2026-10-28T00:07:53-03:00 | Prompt: I want placeholders on the text fields
 Response: Added example placeholders to the title and description fields.
+
+2026-10-28T00:08:13-03:00 | Prompt: you AIs love making things large veritically. no ones makes things like this. be waaaaaaay more compact. you can put thing in the same lines...
+Response: Reduced vertical spacing and placed request metadata on the same line, with compact layout guidance.
