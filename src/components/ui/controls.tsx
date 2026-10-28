@@ -21,3 +21,7 @@ export function VoteButton(props: Omit<ComponentProps<"button">, "className" | "
 export function TextButton(props: Omit<ComponentProps<"button">, "className" | "style">) {
   return <button {...props} className="inline-flex items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />;
 }
+
+export function Select(props: Omit<ComponentProps<"select">, "className" | "style">) {
+  return <select {...props} className="rounded-md border border-border/60 bg-surface px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />;
+}

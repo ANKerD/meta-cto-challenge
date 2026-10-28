@@ -124,3 +124,6 @@ Response: Expanding synthetic health-tech sample requests and covering all ticke
 
 2026-10-28T00:16:24-03:00 | Prompt: clicking a request should open it in a modal, not as a new page
 Response: Moving request detail navigation into a modal over the list.
+
+2026-10-28T00:19:07-03:00 | Prompt: Let's add the ability to change a request's status from the modal and show its update history.
+Response: Adding status changes and displaying ticket update history.

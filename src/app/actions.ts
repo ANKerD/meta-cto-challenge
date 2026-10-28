@@ -3,6 +3,7 @@
 import { DatabaseSync } from "node:sqlite";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { ticketStatuses } from "@/lib/ticket-status";
 
 export async function submitRequest(formData: FormData): Promise<string> {
   const title = formData.get("title");
@@ -42,4 +43,20 @@ export async function setVote(uuid: string, operation: "add" | "remove") {
     db.close();
   }
   revalidatePath("/");
+}
+
+export async function updateStatus(uuid: string, formData: FormData) {
+  const status = formData.get("status");
+  if (typeof uuid !== "string" || typeof status !== "string" || !ticketStatuses.some((value) => value === status)) {
+    throw new Error("Invalid status.");
+  }
+
+  const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
+  try {
+    const result = db.prepare("UPDATE tickets SET status = ? WHERE uuid = ?").run(status, uuid);
+    if (!result.changes) throw new Error("Request not found.");
+  } finally {
+    db.close();
+  }
+  revalidatePath("/", "layout");
 }
