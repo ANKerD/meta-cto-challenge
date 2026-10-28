@@ -18,8 +18,8 @@ export function VoteButton(props: Omit<ComponentProps<"button">, "className" | "
   return <button {...props} className="inline-flex items-center justify-center gap-2 rounded-md border border-vote bg-surface p-2 text-vote hover:bg-vote hover:text-on-vote aria-pressed:bg-vote aria-pressed:text-on-vote aria-pressed:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50" />;
 }
 
-export function TextButton(props: Omit<ComponentProps<"button">, "className" | "style">) {
-  return <button {...props} className="inline-flex items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />;
+export function CloseButton(props: Omit<ComponentProps<"button">, "className" | "style">) {
+  return <button {...props} className="inline-flex items-center justify-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-close hover:bg-close/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-close" />;
 }
 
 export function StatusButton(props: Omit<ComponentProps<"button">, "className" | "style">) {
