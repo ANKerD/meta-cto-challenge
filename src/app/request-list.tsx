@@ -3,7 +3,8 @@ import { archiveDueTickets } from "@/lib/archive";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
-import { Button, Input, VoteButton } from "@/components/ui/controls";
+import { VoteButton } from "@/components/ui/controls";
+import { SearchControls } from "./search-controls";
 import { StatusSelect } from "@/app/requests/status-select";
 import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
@@ -55,13 +56,7 @@ export async function RequestList({ archived = false, query = "" }: { archived?:
           <h1 className="text-2xl font-semibold tracking-tight">{archived ? "Archived requests" : "Feature requests"}</h1>
           <RequestForm />
         </div>
-        <nav className="mt-3 flex gap-4 text-sm"><Link href="/" className="text-muted hover:text-foreground">Requests</Link><Link href="/archived" className="text-muted hover:text-foreground">Archived</Link></nav>
-        <form action={listPath} className="mt-4 flex items-center gap-2">
-          <label htmlFor="request-search" className="sr-only">Search requests</label>
-          <Input id="request-search" name="q" defaultValue={query} placeholder="Search requests" />
-          <Button type="submit">Search</Button>
-          {query && <Link href={listPath} className="text-sm text-muted hover:text-foreground">Clear</Link>}
-        </form>
+        <SearchControls key={`${listPath}-${query}`} archived={archived} query={query} />
         {searchError && <p role="alert" className="mt-2 text-sm text-muted">Search unavailable. Check Ollama and try again.</p>}
         {search && search.pending > 0 && <p className="mt-2 text-sm text-muted">{search.pending} requests are not indexed yet and are excluded from these results.</p>}
         <ul className="mt-4 divide-y divide-border/60 border-y border-border/60">

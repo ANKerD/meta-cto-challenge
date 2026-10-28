@@ -193,3 +193,6 @@ Response: Describing grouping options and the thresholds, and identifying the co
 
 2026-10-28T01:02:46-03:00 | Decision: Block creation when a request scores 80% or higher; direct the user to the existing ticket.
 Response: Incorporated the decision into the proposed triage flow.
+
+2026-10-28T01:03:42-03:00 | Prompt: couple UI nits: archived should be a toggle "Show archived", no need to the requests tab. No need to the search button, should be an augmention len icon only. No need to the clear butotn, should be a cross icon on the right top of the text area when there's text.
+Response: Updating archive and search controls while preserving search behavior.
