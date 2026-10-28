@@ -1,0 +1,17 @@
+2026-10-27T23:32:47-03:00 | Prompt: Create an AGENTS.md file in the project root with the supplied prompt-logging instruction. | Response: Created AGENTS.md and initialized prompts.txt.
+2026-10-27T23:33:27-03:00 | Prompt: Create a public GitHub repository named meta-cto-challenge on my personal account and use it for today's challenge. | Response: Checking the account and challenge context; preparing the repository.
+2026-10-27T23:33:43-03:00 | Update: Created and cloned the public repository ANKerD/meta-cto-challenge. Awaiting the source of today's challenge.
+2026-10-27T23:35:01-03:00 | Prompt: Use poteto-mode, read the linked challenge, build project boilerplate and a simple roadmap; leave architectural decisions to the user. | Response: Inspecting the requirements and preparing the first steps.
+
+Original prompt: Create a AGENTS.md file in the project root with the following instruction:
+# Project Rules
+## Prompt Logging
+Every time you receive a new instruction or prompt, append it to prompts.txt in the project root with a timestamp (ISO 8601) and a brief summary of what you did in response. Create the file if it doesn't exist. Keep this log updated throughout all sessions.
+
+Original prompt: Create a folder, meta-cto-challenge public on github, on my own personal account and let's use it to put the contents of todays challenge
+
+Original prompt: [$poteto-mode](/Users/andiso/.codex/skills/poteto-mode/SKILL.md) the description of the challenge is outlined here. let's build a system according to the requirements https://docs.google.com/document/d/1KSEUaS6WcT2lA9rn8cMgbTWMxRJkMm2NzD8yfcUY-aE/edit?tab=t.0
+
+You will not make any architectural decision. you're a super capable senior dev but needs to be told what to do. let's start with first steps. building the boilerplate of the project, a simple roadmap for the implementation and I'll guide on each step
+
+2026-10-27T23:35:21-03:00 | Response: Read the assessment, added project instructions and a requirements-based roadmap. The runnable boilerplate awaits a stack decision.
