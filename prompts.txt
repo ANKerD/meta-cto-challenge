@@ -68,3 +68,6 @@ Response: Starting the Next.js development server and opening the app in Chrome 
 
 2026-10-28T00:01:22-03:00 | Prompt: I want ticket's to have distinct uuids store internally and used in URLs plus auto increment numbers. For now we will NOT build things like project prefixes like "SAL-123" or "SAF-910", but in future that could be the case.
 Response: Adding UUIDs and retaining auto-incremented ticket numbers, with a data-preserving migration.
+
+2026-10-28T00:02:41-03:00 | Prompt: First create some test data, add it into the seeds, create a routine to keep the dev database dumped into the repo for engineers having the same setup
+Response: Preparing synthetic seed data and repeatable database export and restore commands.

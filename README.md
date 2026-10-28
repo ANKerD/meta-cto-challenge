@@ -13,3 +13,9 @@ Use Node.js 24 and npm. Run `npm run setup` to install dependencies and create t
 The database is stored in `data.sqlite` and is excluded from Git. The project uses Node's built-in SQLite module. The setup command creates the ticket, relationship, and update-history tables. It leaves existing data in place.
 
 Tickets have an auto-incrementing number and a unique UUID. Use the UUID for ticket URLs. Running setup upgrades an existing database and preserves ticket numbers, relationships, and update history.
+
+## Development data
+
+The repository includes a SQLite dump with sample requests. `npm run setup` restores it when creating a database and preserves an existing database. To share changes to development data, run `npm run db:dump`, review `db/seed.sql`, and commit it. The dump command requires the `sqlite3` command-line tool.
+
+The dump includes all data in `data.sqlite`. This repository is public, so remove private or sensitive data before committing a dump. To start with the shared data again, back up or move your existing `data.sqlite` and run `npm run setup`.

@@ -5,6 +5,11 @@ const db = new DatabaseSync("data.sqlite");
 const schema = readFileSync(new URL("schema.sql", import.meta.url), "utf8");
 
 try {
+  const hasTables = db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' LIMIT 1").get();
+  if (!hasTables) {
+    db.exec(readFileSync(new URL("seed.sql", import.meta.url), "utf8"));
+    db.exec("PRAGMA foreign_keys = ON");
+  }
   db.exec(schema);
   const columns = db.prepare("PRAGMA table_info(tickets)").all();
   const table = db.prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'tickets'").get();
