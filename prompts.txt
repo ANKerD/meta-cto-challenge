@@ -199,3 +199,6 @@ Response: Updating archive and search controls while preserving search behavior.
 
 2026-10-28T01:05:17-03:00 | Prompt: the audit is showinf Unkown user. make this not happen
 Response: Investigating missing actors and fixing attribution for new activity while preserving historical truth.
+
+2026-10-28T01:08:57-03:00 | Prompt: implement the checks for duplication. Create a feature flag based on environment flag to prevent creation based on ollama status. by default if the new, to be created reuest can't be processed show an error saying this is anavailable. the feature flag would toggle and leave a warning saying that deduplication is disabled and user should be careful. troubleshooot what happened to ollama and put it back up
+Response: Implementing server-enforced duplicate checks and an explicit unavailable-service override; investigating Ollama.

@@ -31,3 +31,7 @@ Closed and done requests are archived seven days after entering that status. The
 Install and start Ollama, then download the embedding model with `ollama pull qwen3-embedding:0.6b`. Run `npm run setup` to initialize the indexing queue and backfill existing requests. The running server processes the queue and retries failed items. Creating a request or changing its title or description queues it for indexing. Queued requests are excluded from semantic results until indexing succeeds. The queue persists across restarts; no indexing runs while the server is stopped.
 
 Changing the embedding model requires regenerating existing embeddings. `npm run db:dump` includes embeddings and queued work along with the rest of the database.
+
+## Duplicate checks
+
+By default, a request cannot be created if Ollama is unavailable. To allow creation during an Ollama outage, set `DEDUP_ALLOW_OLLAMA_UNAVAILABLE=true` in the server environment and restart the server. When Ollama is unavailable, users must confirm a warning that duplicate checking is disabled before creating a request. When Ollama is available, duplicate checking remains enabled. Requests waiting for indexing still block creation until their embeddings are ready.
