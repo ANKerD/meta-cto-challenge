@@ -39,10 +39,11 @@ export default async function Home() {
                 <span className="font-medium">{String(ticket.title)}</span>
                 <span className="text-muted">{String(ticket.status).replaceAll("_", " ")}</span>
               </div>
-              <form action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
+              <form className="flex items-center gap-2" action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
+                <span className="rounded-md bg-surface px-2 py-1 font-mono text-sm text-muted" aria-label={`${String(ticket.votes)} upvotes`}>{String(ticket.votes)}</span>
                 <SecondaryButton type="submit" disabled={!username} aria-pressed={Boolean(ticket.voted)}>
                   <ArrowUp size={16} aria-hidden="true" />
-                  {ticket.voted ? "Remove upvote" : "Upvote"} · <span className="font-mono">{String(ticket.votes)}</span>
+                  {ticket.voted ? "Remove upvote" : "Upvote"}
                 </SecondaryButton>
               </form>
             </li>

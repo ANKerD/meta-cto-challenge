@@ -100,3 +100,6 @@ Response: Adding a consistent icon library and applying icons to existing action
 
 2026-10-28T00:10:17-03:00 | Prompt: The new request should have icon and purple for everything is a bad choice. buttons should have colors based on their actions, nor eveithing the same.
 Response: Keeping the new-request icon and distinguishing primary actions from voting controls.
+
+2026-10-28T00:10:44-03:00 | Prompt: The upvote count should not be on the button, put a chip leading it
+Response: Moved the count into a chip before the upvote control.
