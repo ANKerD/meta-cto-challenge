@@ -53,3 +53,6 @@ Response: Proposed the submission flow for review without implementing it.
 
 2026-10-27T23:54:27-03:00 | Prompt: Yes, clear the form and show a confirmation on the same page. Go ahead and implement the submission flow.
 Response: Implementing the submission form and server-side validation and persistence.
+
+2026-10-27T23:56:35-03:00 | Prompt: Before moving on I wanna make sure this don't look like pure AI slop. search a couple design systems in a similar industry that we can use as inspiration. our agents and code needs to be structured in such a way that will be hard to create visual components outside of the deisgn language we chose
+Response: Researching design systems and proposing enforceable constraints before selecting a visual language.
