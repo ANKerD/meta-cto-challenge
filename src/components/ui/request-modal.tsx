@@ -1,0 +1,22 @@
+"use client";
+
+import { useEffect, useRef, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
+import { TextButton } from "./controls";
+
+export function RequestModal({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    ref.current?.showModal();
+  }, []);
+
+  return (
+    <dialog ref={ref} aria-label="Feature request details" onCancel={(event) => { event.preventDefault(); router.push("/"); }} className="m-auto max-h-full w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
+      <div className="flex justify-end"><TextButton type="button" onClick={() => router.push("/")}><X size={16} aria-hidden="true" />Close</TextButton></div>
+      {children}
+    </dialog>
+  );
+}

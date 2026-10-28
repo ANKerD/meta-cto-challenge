@@ -121,3 +121,6 @@ Response: Adding UUID-based request detail pages with descriptions and related-t
 
 2026-10-28T00:15:31-03:00 | Prompt: Add more things to the seed. wanna have all statuses observed. also make the requests more verossimilhança. let's imagine we are a startup on health fields and have feature requests to our products
 Response: Expanding synthetic health-tech sample requests and covering all ticket statuses.
+
+2026-10-28T00:16:24-03:00 | Prompt: clicking a request should open it in a modal, not as a new page
+Response: Moving request detail navigation into a modal over the list.

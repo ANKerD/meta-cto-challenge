@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   description: "Feature request intelligence",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children, modal }: LayoutProps<"/">) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{children}{modal}</body>
     </html>
   );
 }
