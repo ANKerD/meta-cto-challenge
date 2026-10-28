@@ -24,3 +24,18 @@ Response: Recorded local Ollama as the AI runtime; model and workflow remain ope
 
 2026-10-27T23:41:38-03:00 | Prompt: Let's define the feature request data model next. Show me the fields required by the challenge and let me decide before you implement it.
 Response: Identified the explicitly required request fields and behaviors; deferred the data model to the user.
+
+2026-10-27T23:44:38-03:00 | Prompt: Let's include an ID, title, description, creation date, status, related tickets[]. Show me the proposed schema before implementing it.
+
+create another table to track each update on the ticket. lets define the allowed ticket states as enum. this can be updated at at later time:
+
+- Open
+- In progress
+- Closed
+- In Review
+- Testing
+- Done
+- Duplicate.
+
+id should be auto generated.
+Response: Proposed request, relationship, and update history fields for review. No schema implemented.
