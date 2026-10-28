@@ -1,0 +1,15 @@
+import type { ComponentProps } from "react";
+
+const fieldStyle = "w-full rounded-md border border-border/60 bg-surface px-3 py-2 text-sm text-foreground shadow-sm outline-none placeholder:text-muted focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30 disabled:opacity-50";
+
+export function Input(props: Omit<ComponentProps<"input">, "className" | "style">) {
+  return <input {...props} className={fieldStyle} />;
+}
+
+export function Textarea(props: Omit<ComponentProps<"textarea">, "className" | "style">) {
+  return <textarea {...props} className={`${fieldStyle} resize-y`} />;
+}
+
+export function Button(props: Omit<ComponentProps<"button">, "className" | "style">) {
+  return <button {...props} className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-on-accent shadow-sm hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50" />;
+}

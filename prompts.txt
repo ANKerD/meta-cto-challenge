@@ -56,3 +56,6 @@ Response: Implementing the submission form and server-side validation and persis
 
 2026-10-27T23:56:35-03:00 | Prompt: Before moving on I wanna make sure this don't look like pure AI slop. search a couple design systems in a similar industry that we can use as inspiration. our agents and code needs to be structured in such a way that will be hard to create visual components outside of the deisgn language we chose
 Response: Researching design systems and proposing enforceable constraints before selecting a visual language.
+
+2026-10-27T23:57:50-03:00 | Prompt: Never heard of github Primer. I really hate Jura, never ever bring that shit up againb. Love linear, we can copy their design language for this challenge
+Response: Selected Linear as the visual reference and updating the form and design guardrails.
