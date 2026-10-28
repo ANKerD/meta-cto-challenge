@@ -12,6 +12,13 @@
   --color-vote: #176b52;
   --color-vote-hover: #10543f;
   --color-on-vote: #ffffff;
+  --color-status-open: #555b68;
+  --color-status-progress: #2359a6;
+  --color-status-closed: #635967;
+  --color-status-review: #7250a2;
+  --color-status-testing: #93550b;
+  --color-status-done: #176b52;
+  --color-status-duplicate: #965257;
 }
 
 body {

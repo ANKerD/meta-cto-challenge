@@ -109,3 +109,6 @@ Response: Gave the upvote action a distinct visible color and updated the design
 
 2026-10-28T00:11:39-03:00 | Prompt: what colors should be good to the upvote button?
 Response: Compared action colors for the light interface and recommended blue.
+
+2026-10-28T00:12:13-03:00 | Prompt: also we should have icons for the statuses along with colors. they should be on a chip similar to the linear design lang
+Response: Adding compact labeled status chips with icons and colors.

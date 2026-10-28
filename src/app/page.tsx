@@ -2,6 +2,7 @@ import { DatabaseSync } from "node:sqlite";
 import { cookies } from "next/headers";
 import { ArrowUp } from "lucide-react";
 import { VoteButton } from "@/components/ui/controls";
+import { StatusChip } from "@/components/ui/status-chip";
 import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
 
@@ -37,7 +38,7 @@ export default async function Home() {
               <div className="flex min-w-0 flex-wrap items-center gap-x-3 text-sm">
                 <span className="font-mono text-muted">#{String(ticket.id)}</span>
                 <span className="font-medium">{String(ticket.title)}</span>
-                <span className="text-muted">{String(ticket.status).replaceAll("_", " ")}</span>
+                <StatusChip status={String(ticket.status)} />
               </div>
               <form className="flex items-center gap-2" action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
                 <span className="rounded-md bg-surface px-2 py-1 font-mono text-sm text-muted" aria-label={`${String(ticket.votes)} upvotes`}>{String(ticket.votes)}</span>
