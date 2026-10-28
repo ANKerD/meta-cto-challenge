@@ -202,3 +202,6 @@ Response: Investigating missing actors and fixing attribution for new activity w
 
 2026-10-28T01:08:57-03:00 | Prompt: implement the checks for duplication. Create a feature flag based on environment flag to prevent creation based on ollama status. by default if the new, to be created reuest can't be processed show an error saying this is anavailable. the feature flag would toggle and leave a warning saying that deduplication is disabled and user should be careful. troubleshooot what happened to ollama and put it back up
 Response: Implementing server-enforced duplicate checks and an explicit unavailable-service override; investigating Ollama.
+
+2026-10-28T01:16:55-03:00 | Prompt: Let's review the 35% threshold. Show me the similarity scores for existing requests and recommend a better cutoff for related tickets.
+Response: Comparing existing ticket embeddings and assessing candidate thresholds.
