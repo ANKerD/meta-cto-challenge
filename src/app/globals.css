@@ -9,6 +9,9 @@
   --color-accent: #5e56cf;
   --color-accent-hover: #4d45bd;
   --color-on-accent: #ffffff;
+  --color-vote: #176b52;
+  --color-vote-hover: #10543f;
+  --color-on-vote: #ffffff;
 }
 
 body {

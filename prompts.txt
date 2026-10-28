@@ -103,3 +103,6 @@ Response: Keeping the new-request icon and distinguishing primary actions from v
 
 2026-10-28T00:10:44-03:00 | Prompt: The upvote count should not be on the button, put a chip leading it
 Response: Moved the count into a chip before the upvote control.
+
+2026-10-28T00:11:05-03:00 | Prompt: upvote is also a cta bro. leaving it white is almost like you dont want people using it
+Response: Gave the upvote action a distinct visible color and updated the design guidance.
