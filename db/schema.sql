@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS tickets (
 CREATE TABLE IF NOT EXISTS ticket_votes (
   ticket_id INTEGER NOT NULL REFERENCES tickets(id) ON UPDATE CASCADE ON DELETE CASCADE,
   username TEXT NOT NULL,
+  voted_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   PRIMARY KEY (ticket_id, username)
 );
 

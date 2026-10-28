@@ -11,6 +11,15 @@ try {
     db.exec("PRAGMA foreign_keys = ON");
   }
   db.exec(schema);
+  const voteColumns = db.prepare("PRAGMA table_info(ticket_votes)").all();
+  if (!voteColumns.some((column) => column.name === "voted_at")) {
+    db.exec("ALTER TABLE ticket_votes ADD COLUMN voted_at TEXT");
+  }
+  db.exec(`CREATE TRIGGER IF NOT EXISTS ticket_vote_time AFTER INSERT ON ticket_votes
+    WHEN NEW.voted_at IS NULL BEGIN
+      UPDATE ticket_votes SET voted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+      WHERE ticket_id = NEW.ticket_id AND username = NEW.username;
+    END`);
   const queueColumns = db.prepare("PRAGMA table_info(ticket_index_queue)").all();
   if (!queueColumns.some((column) => column.name === "retry_after")) {
     db.exec("ALTER TABLE ticket_index_queue ADD COLUMN retry_after INTEGER NOT NULL DEFAULT 0");

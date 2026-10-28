@@ -37,3 +37,9 @@ Changing the embedding model requires regenerating existing embeddings. `npm run
 Requests scoring at least 90% against an existing request require an explanation. Ollama reviews it using `qwen3:14b` before creation. Install that model with `ollama pull qwen3:14b`. A failed or invalid review does not create the request.
 
 By default, a request cannot be created if Ollama is unavailable. To allow creation during an Ollama outage, set `DEDUP_ALLOW_OLLAMA_UNAVAILABLE=true` in the server environment and restart the server. When Ollama is unavailable, users must confirm a warning that duplicate checking is disabled before creating a request. When Ollama is available, duplicate checking remains enabled. Requests waiting for indexing still block creation until their embeddings are ready.
+
+## Executive reports
+
+The running server generates a report at 09:00 America/Sao_Paulo using Ollama's `qwen3:14b`. It captures the current active votes and counts those cast in the preceding 24 hours. Removed votes are excluded; legacy votes without a timestamp count only toward all-time totals. Reports are available at `/reports`.
+
+The scheduler runs inside the server: it cannot run while the server is stopped. If the server starts after 09:00, it generates that day's report using the actual time it starts and its preceding 24 hours, rather than reconstructing past votes. Failed reports retry every five minutes while the server runs; a stopped or crashed run can resume after its lease expires. Earlier missed days are not reconstructed. Ollama must be running for report generation.

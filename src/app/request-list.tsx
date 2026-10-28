@@ -49,7 +49,7 @@ export async function RequestList({ archived = false, query = "" }: { archived?:
     <main className="min-h-screen bg-background">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-6 py-4 text-sm">
         <span className="font-medium">Feature requests</span>
-        <span className="text-muted">{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
+        <span className="flex items-center gap-4 text-muted"><Link href="/reports" className="hover:text-foreground">Reports</Link>{username ? <>Signed in as <strong className="font-semibold text-foreground">{username}</strong></> : "To vote, visit /login?user=your_name."}</span>
       </header>
       <section className="mx-auto max-w-2xl px-6 py-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
