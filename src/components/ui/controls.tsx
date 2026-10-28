@@ -15,7 +15,7 @@ export function Button(props: Omit<ComponentProps<"button">, "className" | "styl
 }
 
 export function VoteButton(props: Omit<ComponentProps<"button">, "className" | "style">) {
-  return <button {...props} className="inline-flex items-center justify-center gap-2 rounded-md bg-vote px-3 py-2 text-sm font-medium text-on-vote hover:bg-vote-hover aria-pressed:bg-vote-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50" />;
+  return <button {...props} className="inline-flex items-center justify-center gap-2 rounded-md border border-vote bg-surface p-2 text-vote hover:bg-vote hover:text-on-vote aria-pressed:bg-vote aria-pressed:text-on-vote aria-pressed:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50" />;
 }
 
 export function TextButton(props: Omit<ComponentProps<"button">, "className" | "style">) {

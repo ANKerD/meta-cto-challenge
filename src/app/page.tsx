@@ -41,10 +41,9 @@ export default async function Home() {
                 <StatusChip status={String(ticket.status)} />
               </div>
               <form className="flex items-center gap-2" action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
-                <span className="rounded-md bg-surface px-2 py-1 font-mono text-sm text-muted" aria-label={`${String(ticket.votes)} upvotes`}>{String(ticket.votes)}</span>
-                <VoteButton type="submit" disabled={!username} aria-pressed={Boolean(ticket.voted)}>
+                <span className="rounded-md bg-surface px-2 py-1 text-sm text-muted">Upvotes: <span className="font-mono">{String(ticket.votes)}</span></span>
+                <VoteButton type="submit" disabled={!username} aria-pressed={Boolean(ticket.voted)} aria-label={ticket.voted ? "Remove upvote" : "Upvote"}>
                   <ArrowUp size={16} aria-hidden="true" />
-                  {ticket.voted ? "Remove upvote" : "Upvote"}
                 </VoteButton>
               </form>
             </li>

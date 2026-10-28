@@ -112,3 +112,6 @@ Response: Compared action colors for the light interface and recommended blue.
 
 2026-10-28T00:12:13-03:00 | Prompt: also we should have icons for the statuses along with colors. they should be on a chip similar to the linear design lang
 Response: Adding compact labeled status chips with icons and colors.
+
+2026-10-28T00:13:19-03:00 | Prompt: Let's make the following. Instead of having the full text upvotes, just leave the arrow up for the upvotes. It gets shiny when the user has upvoted it, or standard when it's not upvoted. And on the count you should have upvotes, column, and the number.
+Response: Replaced vote text with an accessible arrow control and labeled count chip, with a highlighted voted state.
