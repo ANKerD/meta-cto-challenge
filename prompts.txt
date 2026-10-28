@@ -142,3 +142,6 @@ Response: Adding the acting user to new history entries and retaining existing h
 
 2026-10-28T00:26:17-03:00 | Prompt: clicking outside the modal should also close the request
 Response: Checking and fixing backdrop dismissal for request modals.
+
+2026-10-28T00:27:04-03:00 | Prompt: clicking on the status of a request on the first page should allow to see the full list of statuses and transition it
+Response: Making list status chips use the existing immediate status selector.

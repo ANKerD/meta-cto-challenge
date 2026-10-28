@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { VoteButton } from "@/components/ui/controls";
-import { StatusChip } from "@/components/ui/status-chip";
+import { StatusSelect } from "@/app/requests/status-select";
 import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
 
@@ -39,7 +39,7 @@ export default async function Home() {
               <div className="flex min-w-0 flex-wrap items-center gap-x-3 text-sm">
                 <span className="font-mono text-muted">#{String(ticket.id)}</span>
                 <Link href={`/requests/${String(ticket.uuid)}`} className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">{String(ticket.title)}</Link>
-                <StatusChip status={String(ticket.status)} />
+                <StatusSelect key={`${String(ticket.uuid)}-${String(ticket.status)}`} uuid={String(ticket.uuid)} status={String(ticket.status)} />
               </div>
               <form className="flex items-center gap-2" action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
                 <span className="rounded-md bg-surface px-2 py-1 text-sm text-muted">Upvotes: <span className="font-mono">{String(ticket.votes)}</span></span>
