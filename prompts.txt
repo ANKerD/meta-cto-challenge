@@ -173,3 +173,6 @@ Response: Moved the signed-in identity to the top bar and emphasized the name.
 
 2026-10-28T00:52:16-03:00 | Prompt: I want 2 outliers with 13 and 17 upvotes, you put almost the same amount of votes on the requests... this is not a gaussian distribution! fix it. I want variation. also make sure we have at least 20 requests
 Response: Expanding synthetic requests and distributing votes with two high outliers.
+
+2026-10-28T00:53:46-03:00 | Prompt: Let's use direct comparison with SQLite and Ollama for semantic search. Show me the proposed approach before implementing it.
+Response: Proposed the embedding storage, indexing, and query flow for review without implementation.
