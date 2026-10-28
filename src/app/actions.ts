@@ -13,7 +13,8 @@ export async function submitRequest(formData: FormData): Promise<string> {
     return "Enter a title and description.";
   }
 
-  const actor = (await cookies()).get("user")?.value || null;
+  const actor = (await cookies()).get("user")?.value;
+  if (!actor) return "To submit a request, visit /login?user=your_name.";
   try {
     const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
     try {
@@ -60,7 +61,8 @@ export async function updateStatus(uuid: string, formData: FormData) {
     throw new Error("Invalid status.");
   }
 
-  const actor = (await cookies()).get("user")?.value || null;
+  const actor = (await cookies()).get("user")?.value;
+  if (!actor) return "To change status, visit /login?user=your_name.";
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   try {
     db.exec("BEGIN IMMEDIATE");
@@ -80,4 +82,5 @@ export async function updateStatus(uuid: string, formData: FormData) {
     db.close();
   }
   revalidatePath("/", "layout");
+  return "";
 }

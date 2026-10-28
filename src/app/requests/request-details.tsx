@@ -60,7 +60,7 @@ export async function RequestDetails({ params, archived = false, query = "" }: {
             {history.map((entry) => (
               <li key={`${String(entry.id)}-${String(entry.field)}`} className="flex flex-wrap items-center gap-x-2 py-2 text-sm">
                 <time className="font-mono text-xs text-muted" dateTime={String(entry.created_at)}>{String(entry.created_at).replace("T", " ").replace(/\.\d+Z$/, " UTC")}</time>
-                <span>{entry.actor === null ? "Unknown user" : String(entry.actor)}</span>
+                <span>{entry.actor === null ? "User not recorded" : String(entry.actor)}</span>
                 <span>{entry.field === "created" ? "Created request" : <>{String(entry.field).replaceAll("_", " ")}: {entry.old_value === null ? "None" : String(entry.old_value).replaceAll("_", " ")} → {entry.new_value === null ? "None" : String(entry.new_value).replaceAll("_", " ")}</>}</span>
               </li>
             ))}

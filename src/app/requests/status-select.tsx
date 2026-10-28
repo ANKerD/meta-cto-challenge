@@ -20,7 +20,11 @@ export function StatusSelect({ uuid, status }: { uuid: string; status: string })
       const data = new FormData();
       data.set("status", value);
       try {
-        await updateStatus(uuid, data);
+        const message = await updateStatus(uuid, data);
+        if (message) {
+          setSelected(status);
+          setError(message);
+        }
       } catch {
         setSelected(status);
         setError("Could not update status. Try again.");
