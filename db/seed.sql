@@ -22,6 +22,28 @@ CREATE TABLE ticket_votes (
   username TEXT NOT NULL,
   PRIMARY KEY (ticket_id, username)
 );
+INSERT INTO ticket_votes VALUES(2,'ana_demo');
+INSERT INTO ticket_votes VALUES(2,'bruno_demo');
+INSERT INTO ticket_votes VALUES(3,'bruno_demo');
+INSERT INTO ticket_votes VALUES(3,'carla_demo');
+INSERT INTO ticket_votes VALUES(4,'carla_demo');
+INSERT INTO ticket_votes VALUES(4,'diego_demo');
+INSERT INTO ticket_votes VALUES(5,'diego_demo');
+INSERT INTO ticket_votes VALUES(5,'elisa_demo');
+INSERT INTO ticket_votes VALUES(6,'ana_demo');
+INSERT INTO ticket_votes VALUES(6,'bruno_demo');
+INSERT INTO ticket_votes VALUES(6,'carla_demo');
+INSERT INTO ticket_votes VALUES(7,'bruno_demo');
+INSERT INTO ticket_votes VALUES(7,'carla_demo');
+INSERT INTO ticket_votes VALUES(7,'diego_demo');
+INSERT INTO ticket_votes VALUES(8,'carla_demo');
+INSERT INTO ticket_votes VALUES(8,'diego_demo');
+INSERT INTO ticket_votes VALUES(8,'elisa_demo');
+INSERT INTO ticket_votes VALUES(9,'ana_demo');
+INSERT INTO ticket_votes VALUES(9,'bruno_demo');
+INSERT INTO ticket_votes VALUES(9,'carla_demo');
+INSERT INTO ticket_votes VALUES(9,'diego_demo');
+INSERT INTO ticket_votes VALUES(9,'elisa_demo');
 CREATE TABLE ticket_updates (
   id INTEGER PRIMARY KEY,
   ticket_id INTEGER NOT NULL REFERENCES tickets(id) ON UPDATE CASCADE,

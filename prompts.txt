@@ -148,3 +148,6 @@ Response: Making list status chips use the existing immediate status selector.
 
 2026-10-28T00:27:55-03:00 | Prompt: I dont want this caret, the options from the selct should be beautifully formatted [screenshot]
 Response: Replacing the native selector with a styled accessible status menu and removing the caret.
+
+2026-10-28T00:30:28-03:00 | Prompt: signed as 5 differents users and distributes votes, wanna have normal distribution of votes and 2 outlierst, you may create more requests if you think needed
+Response: Adding votes from five fictional users with a central distribution and two outliers to the development data.
