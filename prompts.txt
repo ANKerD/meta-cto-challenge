@@ -164,3 +164,6 @@ Response: Recording request creation in history and renaming the history section
 
 2026-10-28T00:45:50-03:00 | Prompt: let's discuss search. I want it to implement semantic search. what do we need to change in terms of databases? can we make it work with sqlite? would it be efficient or do we need anything extra?
 Response: Reviewing SQLite and Ollama options for semantic search without changing the implementation.
+
+2026-10-28T00:49:40-03:00 | Prompt: give me more resources to decide between direct comparison vs sqlite-vec
+Response: Gathered primary documentation and compared operational and performance tradeoffs.
