@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import { StatusChip } from "@/components/ui/status-chip";
 import { StatusSelect } from "./status-select";
 
-export async function RequestDetails({ params, archived = false }: { params: Promise<{ uuid: string }>; archived?: boolean }) {
+export async function RequestDetails({ params, archived = false, query = "" }: { params: Promise<{ uuid: string }>; archived?: boolean; query?: string }) {
+  const context = new URLSearchParams();
+  if (archived) context.set("from", "archived");
+  if (query) context.set("q", query);
+  const suffix = context.size ? `?${context}` : "";
   const { uuid } = await params;
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   let ticket;
@@ -44,7 +48,7 @@ export async function RequestDetails({ params, archived = false }: { params: Pro
             {related.map((item) => (
               <li key={String(item.uuid)} className="flex flex-wrap items-center gap-3 py-2 text-sm">
                 <span className="font-mono text-muted">#{String(item.id)}</span>
-                <Link href={`/requests/${String(item.uuid)}${archived ? "?from=archived" : ""}`} className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">{String(item.title)}</Link>
+                <Link href={`/requests/${String(item.uuid)}${suffix}`} className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">{String(item.title)}</Link>
                 <StatusChip status={String(item.status)} />
               </li>
             ))}

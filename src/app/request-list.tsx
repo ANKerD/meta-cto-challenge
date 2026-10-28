@@ -3,13 +3,21 @@ import { archiveDueTickets } from "@/lib/archive";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
-import { VoteButton } from "@/components/ui/controls";
+import { Button, Input, VoteButton } from "@/components/ui/controls";
 import { StatusSelect } from "@/app/requests/status-select";
 import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
+import { searchTickets } from "@/lib/search";
 
-export async function RequestList({ archived = false }: { archived?: boolean }) {
+export async function RequestList({ archived = false, query = "" }: { archived?: boolean; query?: string }) {
   archiveDueTickets();
+  query = query.trim();
+  let search: Awaited<ReturnType<typeof searchTickets>> | null = null;
+  let searchError = false;
+  if (query) {
+    try { search = await searchTickets(query, archived); }
+    catch { searchError = true; }
+  }
   const username = (await cookies()).get("user")?.value;
   const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
   let tickets;
@@ -24,6 +32,18 @@ export async function RequestList({ archived = false }: { archived?: boolean }) 
     db.close();
   }
 
+  if (query) {
+    const ranks = new Map(search?.ids.map((id, rank) => [id, rank]) ?? []);
+    tickets = tickets.filter((ticket) => ranks.has(Number(ticket.id)))
+      .sort((a, b) => (ranks.get(Number(a.id)) ?? 0) - (ranks.get(Number(b.id)) ?? 0));
+  }
+
+  const listPath = archived ? "/archived" : "/";
+  const detailsQuery = new URLSearchParams();
+  if (archived) detailsQuery.set("from", "archived");
+  if (query) detailsQuery.set("q", query);
+  const detailsSuffix = detailsQuery.size ? `?${detailsQuery}` : "";
+
   return (
     <main className="min-h-screen bg-background">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-6 py-4 text-sm">
@@ -36,12 +56,20 @@ export async function RequestList({ archived = false }: { archived?: boolean }) 
           <RequestForm />
         </div>
         <nav className="mt-3 flex gap-4 text-sm"><Link href="/" className="text-muted hover:text-foreground">Requests</Link><Link href="/archived" className="text-muted hover:text-foreground">Archived</Link></nav>
+        <form action={listPath} className="mt-4 flex items-center gap-2">
+          <label htmlFor="request-search" className="sr-only">Search requests</label>
+          <Input id="request-search" name="q" defaultValue={query} placeholder="Search requests" />
+          <Button type="submit">Search</Button>
+          {query && <Link href={listPath} className="text-sm text-muted hover:text-foreground">Clear</Link>}
+        </form>
+        {searchError && <p role="alert" className="mt-2 text-sm text-muted">Search unavailable. Check Ollama and try again.</p>}
+        {search && search.pending > 0 && <p className="mt-2 text-sm text-muted">{search.pending} requests are not indexed yet and are excluded from these results.</p>}
         <ul className="mt-4 divide-y divide-border/60 border-y border-border/60">
           {tickets.map((ticket) => (
             <li key={String(ticket.uuid)} className="flex items-center justify-between gap-3 py-2">
               <div className="flex min-w-0 flex-wrap items-center gap-x-3 text-sm">
                 <span className="font-mono text-muted">#{String(ticket.id)}</span>
-                <Link href={`/requests/${String(ticket.uuid)}${archived ? "?from=archived" : ""}`} className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">{String(ticket.title)}</Link>
+                <Link href={`/requests/${String(ticket.uuid)}${detailsSuffix}`} className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">{String(ticket.title)}</Link>
                 <StatusSelect key={`${String(ticket.uuid)}-${String(ticket.status)}`} uuid={String(ticket.uuid)} status={String(ticket.status)} />
               </div>
               <form className="flex items-center gap-2" action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
@@ -53,7 +81,7 @@ export async function RequestList({ archived = false }: { archived?: boolean }) 
             </li>
           ))}
         </ul>
-        {tickets.length === 0 && <p className="mt-4 text-sm text-muted">{archived ? "No archived requests." : "No feature requests yet."}</p>}
+        {!searchError && tickets.length === 0 && <p className="mt-4 text-sm text-muted">{query ? "No indexed requests match." : archived ? "No archived requests." : "No feature requests yet."}</p>}
       </section>
     </main>
   );

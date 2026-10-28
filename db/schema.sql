@@ -32,6 +32,30 @@ CREATE TABLE IF NOT EXISTS ticket_relationships (
   CHECK (ticket_id < related_ticket_id)
 );
 
+CREATE TABLE IF NOT EXISTS ticket_embeddings (
+  ticket_id INTEGER PRIMARY KEY REFERENCES tickets(id) ON DELETE CASCADE,
+  model TEXT NOT NULL,
+  embedding TEXT NOT NULL CHECK (json_valid(embedding))
+);
+
+CREATE TABLE IF NOT EXISTS ticket_index_queue (
+  ticket_id INTEGER PRIMARY KEY REFERENCES tickets(id) ON DELETE CASCADE,
+  token TEXT NOT NULL,
+  retry_after INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TRIGGER IF NOT EXISTS ticket_index_created AFTER INSERT ON tickets BEGIN
+  INSERT INTO ticket_index_queue (ticket_id, token) VALUES (NEW.id, lower(hex(randomblob(16))))
+  ON CONFLICT(ticket_id) DO UPDATE SET token = excluded.token, retry_after = 0;
+END;
+
+DROP TRIGGER IF EXISTS ticket_index_updated;
+CREATE TRIGGER ticket_index_updated AFTER UPDATE OF title, description ON tickets
+WHEN OLD.title IS NOT NEW.title OR OLD.description IS NOT NEW.description BEGIN
+  INSERT INTO ticket_index_queue (ticket_id, token) VALUES (NEW.id, lower(hex(randomblob(16))))
+  ON CONFLICT(ticket_id) DO UPDATE SET token = excluded.token, retry_after = 0;
+END;
+
 CREATE VIEW IF NOT EXISTS related_tickets AS
   SELECT ticket_id, related_ticket_id FROM ticket_relationships
   UNION ALL

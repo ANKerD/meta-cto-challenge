@@ -182,3 +182,8 @@ Response: Comparing local embedding models and project constraints; no model ins
 
 2026-10-28T00:56:34-03:00 | Prompt: out of the models you mentioned, which would have the best performance in terms of time to process and accuracy for ops
 Response: Compared available published evidence and distinguished it from measurements on this machine.
+
+2026-10-28T00:58:50-03:00 | Prompt: go with qwen3
+
+Let's implement this as a feature added to a running system. implement a queue for messages to be indexed, older existing requests should be added for backfilling. new requests are added during creation. when a request has title or description updated it should be reindexed.
+Response: Implementing persistent indexing, backfill and semantic search with Ollama qwen3-embedding:0.6b.

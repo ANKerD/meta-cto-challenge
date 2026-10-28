@@ -11,6 +11,13 @@ try {
     db.exec("PRAGMA foreign_keys = ON");
   }
   db.exec(schema);
+  const queueColumns = db.prepare("PRAGMA table_info(ticket_index_queue)").all();
+  if (!queueColumns.some((column) => column.name === "retry_after")) {
+    db.exec("ALTER TABLE ticket_index_queue ADD COLUMN retry_after INTEGER NOT NULL DEFAULT 0");
+  }
+  db.exec(`INSERT OR IGNORE INTO ticket_index_queue (ticket_id, token)
+    SELECT id, lower(hex(randomblob(16))) FROM tickets
+    WHERE NOT EXISTS (SELECT 1 FROM ticket_embeddings WHERE ticket_id = tickets.id AND model = 'qwen3-embedding:0.6b')`);
   const updateColumns = db.prepare("PRAGMA table_info(ticket_updates)").all();
   if (!updateColumns.some((column) => column.name === "actor")) {
     db.exec("ALTER TABLE ticket_updates ADD COLUMN actor TEXT");
