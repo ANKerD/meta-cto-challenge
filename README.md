@@ -19,3 +19,7 @@ Tickets have an auto-incrementing number and a unique UUID. Use the UUID for tic
 The repository includes a SQLite dump with sample requests. `npm run setup` restores it when creating a database and preserves an existing database. To share changes to development data, run `npm run db:dump`, review `db/seed.sql`, and commit it. The dump command requires the `sqlite3` command-line tool.
 
 The dump includes all data in `data.sqlite`. This repository is public, so remove private or sensitive data before committing a dump. To start with the shared data again, back up or move your existing `data.sqlite` and run `npm run setup`.
+
+## Prototype login and voting
+
+Open `http://localhost:3000/login?user=your_name` to vote as that name. Names are case-sensitive. Each name can add or remove one vote per request. The login does not verify identity, so anyone can use another person's name.

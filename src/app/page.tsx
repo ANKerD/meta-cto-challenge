@@ -1,13 +1,49 @@
+import { DatabaseSync } from "node:sqlite";
+import { cookies } from "next/headers";
+import { Button } from "@/components/ui/controls";
+import { setVote } from "./actions";
 import { RequestForm } from "./request-form";
 
-export default function Home() {
+export default async function Home() {
+  const username = (await cookies()).get("user")?.value;
+  const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
+  let tickets;
+  try {
+    tickets = db.prepare(`
+      SELECT t.uuid, t.id, t.title, t.status,
+        (SELECT count(*) FROM ticket_votes WHERE ticket_id = t.id) AS votes,
+        EXISTS (SELECT 1 FROM ticket_votes WHERE ticket_id = t.id AND username = ?) AS voted
+      FROM tickets t ORDER BY t.id DESC
+    `).all(username ?? "");
+  } finally {
+    db.close();
+  }
+
   return (
     <main className="min-h-screen bg-background">
       <header className="border-b border-border/60 px-6 py-4 text-sm font-medium">
         Feature requests
       </header>
       <section className="mx-auto max-w-2xl px-6 py-12">
-        <h1 className="text-2xl font-semibold tracking-tight">Submit a feature request</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Feature requests</h1>
+        <p className="mt-2 text-sm text-muted">{username ? `Signed in as ${username}` : "To vote, visit /login?user=your_name."}</p>
+        <ul className="mt-8 divide-y divide-border/60 border-y border-border/60">
+          {tickets.map((ticket) => (
+            <li key={String(ticket.uuid)} className="flex items-center justify-between gap-4 py-4">
+              <div>
+                <p className="font-medium">{String(ticket.title)}</p>
+                <p className="mt-1 text-sm text-muted"><span className="font-mono">#{String(ticket.id)}</span> · {String(ticket.status).replaceAll("_", " ")}</p>
+              </div>
+              <form action={setVote.bind(null, String(ticket.uuid), ticket.voted ? "remove" : "add")}>
+                <Button type="submit" disabled={!username} aria-pressed={Boolean(ticket.voted)}>
+                  {ticket.voted ? "Remove upvote" : "Upvote"} · <span className="font-mono">{String(ticket.votes)}</span>
+                </Button>
+              </form>
+            </li>
+          ))}
+        </ul>
+        {tickets.length === 0 && <p className="mt-4 text-sm text-muted">No feature requests yet.</p>}
+        <h2 className="mt-12 text-xl font-semibold tracking-tight">Submit a feature request</h2>
         <div className="mt-8">
           <RequestForm />
         </div>

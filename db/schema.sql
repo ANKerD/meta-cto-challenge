@@ -9,6 +9,12 @@ CREATE TABLE IF NOT EXISTS tickets (
   status TEXT NOT NULL DEFAULT 'open'
 );
 
+CREATE TABLE IF NOT EXISTS ticket_votes (
+  ticket_id INTEGER NOT NULL REFERENCES tickets(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  username TEXT NOT NULL,
+  PRIMARY KEY (ticket_id, username)
+);
+
 CREATE TABLE IF NOT EXISTS ticket_updates (
   id INTEGER PRIMARY KEY,
   ticket_id INTEGER NOT NULL REFERENCES tickets(id) ON UPDATE CASCADE,

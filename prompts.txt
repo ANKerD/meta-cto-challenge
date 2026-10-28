@@ -80,3 +80,8 @@ Response: Checking user identification and ticket storage before implementing ac
 
 2026-10-28T00:05:22-03:00 | Prompt: this really looks AI [screenshot of descriptive sentence and divider]
 Response: Removed redundant form copy and decorative divider.
+
+2026-10-28T00:06:05-03:00 | Prompt: The way I want login is having a url /login?user=some_name
+
+multi user will look like this for this prototype
+Response: Implementing prototype name-based login and one removable vote per user and ticket.

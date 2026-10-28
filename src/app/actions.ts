@@ -1,6 +1,8 @@
 "use server";
 
 import { DatabaseSync } from "node:sqlite";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function submitRequest(formData: FormData): Promise<string> {
   const title = formData.get("title");
@@ -21,5 +23,23 @@ export async function submitRequest(formData: FormData): Promise<string> {
     return "Could not submit the request. Please try again.";
   }
 
+  revalidatePath("/");
   return "";
+}
+
+export async function setVote(uuid: string, operation: "add" | "remove") {
+  const username = (await cookies()).get("user")?.value;
+  if (!username || typeof uuid !== "string" || (operation !== "add" && operation !== "remove")) return;
+
+  const db = new DatabaseSync("data.sqlite", { timeout: 5000 });
+  try {
+    if (operation === "add") {
+      db.prepare("INSERT OR IGNORE INTO ticket_votes (ticket_id, username) SELECT id, ? FROM tickets WHERE uuid = ?").run(username, uuid);
+    } else {
+      db.prepare("DELETE FROM ticket_votes WHERE username = ? AND ticket_id = (SELECT id FROM tickets WHERE uuid = ?)").run(username, uuid);
+    }
+  } finally {
+    db.close();
+  }
+  revalidatePath("/");
 }
