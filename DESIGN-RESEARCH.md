@@ -4,6 +4,6 @@ Use [Linear's interface](https://linear.app/now/how-we-redesigned-the-linear-ui)
 
 Use Lucide icons for actions where they improve recognition. Use 16px icons in controls, hide decorative icons from assistive technology, and keep a visible or accessible action label. Avoid decorative icons.
 
-Define semantic colors in `src/app/globals.css`. Use the controls in `src/components/ui/controls.tsx` for forms. Add a shared control when a new screen needs one, rather than styling the same control in each feature. Use the standard Tailwind spacing scale. Keep lists and forms compact. Place related metadata on the same line when space allows, and wrap on narrow screens.
+Define semantic colors in `src/app/globals.css`. Use the controls in `src/components/ui/controls.tsx` for forms. Reserve accent-filled buttons for primary actions. Use neutral controls for secondary actions and indicate selected states clearly. Add a shared control when a new screen needs one, rather than styling the same control in each feature. Use the standard Tailwind spacing scale. Keep lists and forms compact. Place related metadata on the same line when space allows, and wrap on narrow screens.
 
 ESLint restricts native form controls outside `src/components/ui/`, inline styles, arbitrary Tailwind values, and named Tailwind colors in JSX. These checks catch common deviations but do not judge visual quality. Inspect each changed screen in a browser, including focus, validation, and disabled states.

@@ -97,3 +97,6 @@ Response: Moving request submission to a modal opened by a top-level button.
 
 2026-10-28T00:09:33-03:00 | Prompt: add to our design languages icons like the ones spotify uses or any other descent design system has
 Response: Adding a consistent icon library and applying icons to existing actions.
+
+2026-10-28T00:10:17-03:00 | Prompt: The new request should have icon and purple for everything is a bad choice. buttons should have colors based on their actions, nor eveithing the same.
+Response: Keeping the new-request icon and distinguishing primary actions from voting controls.
