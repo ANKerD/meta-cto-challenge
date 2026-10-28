@@ -118,3 +118,6 @@ Response: Replaced vote text with an accessible arrow control and labeled count 
 
 2026-10-28T00:14:04-03:00 | Prompt: Let's make the feature requests clickable so I can see their full description and related tickets.
 Response: Adding UUID-based request detail pages with descriptions and related-ticket links.
+
+2026-10-28T00:15:31-03:00 | Prompt: Add more things to the seed. wanna have all statuses observed. also make the requests more verossimilhança. let's imagine we are a startup on health fields and have feature requests to our products
+Response: Expanding synthetic health-tech sample requests and covering all ticket statuses.
