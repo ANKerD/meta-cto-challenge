@@ -91,3 +91,6 @@ Response: Added example placeholders to the title and description fields.
 
 2026-10-28T00:08:13-03:00 | Prompt: you AIs love making things large veritically. no ones makes things like this. be waaaaaaay more compact. you can put thing in the same lines...
 Response: Reduced vertical spacing and placed request metadata on the same line, with compact layout guidance.
+
+2026-10-28T00:08:33-03:00 | Prompt: submitting a new feature request should be a modal with a clear CTA at the top
+Response: Moving request submission to a modal opened by a top-level button.

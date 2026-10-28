@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { submitRequest } from "./actions";
-import { Button, Input, Textarea } from "@/components/ui/controls";
+import { Button, Input, Textarea, TextButton } from "@/components/ui/controls";
 
 export function RequestForm() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [message, action, pending] = useActionState(async (_message: string, data: FormData) => {
@@ -16,17 +17,26 @@ export function RequestForm() {
   }, "");
 
   return (
-    <form action={action} className="space-y-4">
-      <div className="space-y-2">
-        <label htmlFor="title" className="block text-sm font-medium">Title</label>
-        <Input id="title" name="title" placeholder="Search requests by keyword" required disabled={pending} value={title} onChange={(event) => setTitle(event.target.value)} />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="description" className="block text-sm font-medium">Description</label>
-        <Textarea id="description" name="description" placeholder="What problem would this solve?" required disabled={pending} rows={3} value={description} onChange={(event) => setDescription(event.target.value)} />
-      </div>
-      <Button type="submit" disabled={pending}>{pending ? "Submitting..." : "Submit request"}</Button>
-      <p role="status" aria-live="polite" className="text-sm text-muted">{message}</p>
-    </form>
+    <>
+      <Button type="button" onClick={() => dialogRef.current?.showModal()}>New request</Button>
+      <dialog ref={dialogRef} aria-labelledby="request-dialog-title" className="m-auto w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <h2 id="request-dialog-title" className="text-lg font-semibold">Submit a feature request</h2>
+          <TextButton type="button" onClick={() => dialogRef.current?.close()}>Close</TextButton>
+        </div>
+        <form action={action} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="title" className="block text-sm font-medium">Title</label>
+                <Input id="title" name="title" placeholder="Search requests by keyword" required disabled={pending} value={title} onChange={(event) => setTitle(event.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="description" className="block text-sm font-medium">Description</label>
+                <Textarea id="description" name="description" placeholder="What problem would this solve?" required disabled={pending} rows={3} value={description} onChange={(event) => setDescription(event.target.value)} />
+              </div>
+              <Button type="submit" disabled={pending}>{pending ? "Submitting..." : "Submit request"}</Button>
+              <p role="status" aria-live="polite" className="text-sm text-muted">{message}</p>
+        </form>
+      </dialog>
+    </>
   );
 }

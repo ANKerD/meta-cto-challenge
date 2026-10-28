@@ -25,7 +25,10 @@ export default async function Home() {
         Feature requests
       </header>
       <section className="mx-auto max-w-2xl px-6 py-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Feature requests</h1>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight">Feature requests</h1>
+          <RequestForm />
+        </div>
         <p className="mt-2 text-sm text-muted">{username ? `Signed in as ${username}` : "To vote, visit /login?user=your_name."}</p>
         <ul className="mt-4 divide-y divide-border/60 border-y border-border/60">
           {tickets.map((ticket) => (
@@ -44,10 +47,6 @@ export default async function Home() {
           ))}
         </ul>
         {tickets.length === 0 && <p className="mt-4 text-sm text-muted">No feature requests yet.</p>}
-        <h2 className="mt-8 text-xl font-semibold tracking-tight">Submit a feature request</h2>
-        <div className="mt-4">
-          <RequestForm />
-        </div>
       </section>
     </main>
   );
