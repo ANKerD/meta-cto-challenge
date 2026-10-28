@@ -170,3 +170,6 @@ Response: Gathered primary documentation and compared operational and performanc
 
 2026-10-28T00:51:33-03:00 | Prompt: this should be on the top bar, pulled to the right. name os user should be bold. [image: Signed in as andiso]
 Response: Moved the signed-in identity to the top bar and emphasized the name.
+
+2026-10-28T00:52:16-03:00 | Prompt: I want 2 outliers with 13 and 17 upvotes, you put almost the same amount of votes on the requests... this is not a gaussian distribution! fix it. I want variation. also make sure we have at least 20 requests
+Response: Expanding synthetic requests and distributing votes with two high outliers.
