@@ -133,3 +133,6 @@ Response: Updating direct ticket URLs and browser navigation to display the requ
 
 2026-10-28T00:22:40-03:00 | Prompt: the close button is poorly misaligned with the title [screenshot]
 Response: Aligned the modal close control with the request heading.
+
+2026-10-28T00:23:15-03:00 | Prompt: You don't have for this status. You don't need to have the label status. You can just have the actual status as is. Display it in capitalized case, and we don't need the save status button. If a new status is clicked, then that transitions the ticket to the new status.
+Response: Replacing the status form with an immediate status selector.

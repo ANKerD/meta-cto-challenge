@@ -22,6 +22,6 @@ export function TextButton(props: Omit<ComponentProps<"button">, "className" | "
   return <button {...props} className="inline-flex items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />;
 }
 
-export function Select(props: Omit<ComponentProps<"select">, "className" | "style">) {
-  return <select {...props} className="rounded-md border border-border/60 bg-surface px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />;
+export function StatusDropdown(props: Omit<ComponentProps<"select">, "className" | "style">) {
+  return <select {...props} className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-wait" />;
 }

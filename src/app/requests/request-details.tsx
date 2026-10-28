@@ -2,9 +2,7 @@ import { DatabaseSync } from "node:sqlite";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusChip } from "@/components/ui/status-chip";
-import { Button, Select } from "@/components/ui/controls";
-import { ticketStatuses } from "@/lib/ticket-status";
-import { updateStatus } from "@/app/actions";
+import { StatusSelect } from "./status-select";
 
 export async function RequestDetails({ params }: { params: Promise<{ uuid: string }> }) {
   const { uuid } = await params;
@@ -36,15 +34,8 @@ export async function RequestDetails({ params }: { params: Promise<{ uuid: strin
         <div className="flex flex-wrap items-center gap-3">
           <span className="font-mono text-sm text-muted">#{String(ticket.id)}</span>
           <h1 className="text-2xl font-semibold tracking-tight">{String(ticket.title)}</h1>
-          <StatusChip status={String(ticket.status)} />
+          <StatusSelect key={`${uuid}-${String(ticket.status)}`} uuid={uuid} status={String(ticket.status)} />
         </div>
-        <form action={updateStatus.bind(null, uuid)} className="mt-4 flex flex-wrap items-center gap-2">
-          <label htmlFor="status" className="text-sm font-medium">Status</label>
-          <Select key={`${uuid}-${String(ticket.status)}`} id="status" name="status" defaultValue={String(ticket.status)}>
-            {ticketStatuses.map((status) => <option key={status} value={status}>{status.replaceAll("_", " ")}</option>)}
-          </Select>
-          <Button type="submit">Save status</Button>
-        </form>
         <h2 className="mt-6 text-sm font-semibold">Description</h2>
         <p className="mt-2 whitespace-pre-wrap text-sm">{String(ticket.description)}</p>
         <h2 className="mt-6 text-sm font-semibold">Related tickets</h2>
