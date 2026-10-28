@@ -20,7 +20,11 @@ export function RequestForm() {
   return (
     <>
       <Button type="button" onClick={() => dialogRef.current?.showModal()}><Plus size={16} aria-hidden="true" />New request</Button>
-      <dialog ref={dialogRef} aria-labelledby="request-dialog-title" className="m-auto w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
+      <dialog ref={dialogRef} aria-labelledby="request-dialog-title" onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.currentTarget.close();
+      }} className="m-auto w-full max-w-lg rounded-md border border-border/60 bg-surface p-6 text-foreground shadow-sm backdrop:bg-foreground/40">
         <div className="mb-4 flex items-center justify-between gap-4">
           <h2 id="request-dialog-title" className="text-lg font-semibold">Submit a feature request</h2>
           <TextButton type="button" onClick={() => dialogRef.current?.close()}><X size={16} aria-hidden="true" />Close</TextButton>

@@ -139,3 +139,6 @@ Response: Replacing the status form with an immediate status selector.
 
 2026-10-28T00:25:00-03:00 | Prompt: The update history should also track which user did the update.
 Response: Adding the acting user to new history entries and retaining existing history.
+
+2026-10-28T00:26:17-03:00 | Prompt: clicking outside the modal should also close the request
+Response: Checking and fixing backdrop dismissal for request modals.
