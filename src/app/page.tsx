@@ -8,8 +8,7 @@ export default function Home() {
       </header>
       <section className="mx-auto max-w-2xl px-6 py-12">
         <h1 className="text-2xl font-semibold tracking-tight">Submit a feature request</h1>
-        <p className="mt-2 text-sm text-muted">Describe the feature you need.</p>
-        <div className="mt-8 border-t border-border/60 pt-8">
+        <div className="mt-8">
           <RequestForm />
         </div>
       </section>
