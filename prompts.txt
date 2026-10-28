@@ -242,3 +242,9 @@ Response: Extended local classification to new and existing request text at subm
 
 2026-10-28T02:00:10-03:00 | Prompt: Require login to access the system and redirect to a simple login page where users enter their username.
 Response: Added a username login page and protected app routes.
+
+2026-10-28T02:02:21-03:00 | Prompt: Review the challenge specs and create a well-edited approximately five-minute demo video with an English Deepgram voice-over covering the product, features, AI, architecture, tradeoffs, and AI-assisted development.
+Response: Reviewing requirements, recording the app, and producing the narrated demo.
+
+2026-10-28T02:08:08-03:00 | Decision: Use the Deepgram key configured in the Afterquery folder for the English narration.
+Response: Generated the voice-over and assembled the demo video.
